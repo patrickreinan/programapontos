@@ -1,5 +1,5 @@
 # ProgramaPontos
-Aplicação simples para demonstração da utilização de CQRS + EventSourcing.
+Aplicação simples para demonstração da utilização de CQRS + EventSourcing demonstrado na live em https://www.youtube.com/watch?v=_AA1Zj1XEG8
 
 Esta aplicação tem a finalidade de mostrar através de uma regra de programa de pontos como o CQRS + EventSourcing pode ser implementado. O domínio foi modelado utiizando o Domain Driven Design (DDD).
 
