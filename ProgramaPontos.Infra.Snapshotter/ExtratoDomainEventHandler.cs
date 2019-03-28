@@ -1,7 +1,6 @@
 ﻿using ProgramaPontos.Domain.Aggregates.ExtratoAggregate;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Events;
-using ProgramaPontos.EventHandler.Sinc;
 using ProgramaPontos.Infra.Snapshotter.Core;
 using System;
 
@@ -14,12 +13,17 @@ namespace ProgramaPontos.Infra.Snapshotter
     {
         private readonly SnapshotSettings snapshotSettings;
         private readonly ISnapshotterWriter snapshotterWriter;
+        private readonly IEventStoreService eventStoreService;
 
-        public ExtratoDomainEventHandler(SnapshotSettings snapshotSettings, ISnapshotterWriter snapshotterWriter
+        public ExtratoDomainEventHandler(
+            SnapshotSettings snapshotSettings, 
+            ISnapshotterWriter snapshotterWriter,
+            IEventStoreService eventStoreService
             )
         {
             this.snapshotSettings = snapshotSettings;
             this.snapshotterWriter = snapshotterWriter;
+            this.eventStoreService = eventStoreService;
         }
 
         public void Handle(ExtratoPontosRemovidosDomainEvent @event)
@@ -47,13 +51,8 @@ namespace ProgramaPontos.Infra.Snapshotter
 
         private void CreateSnapshot(DomainEvent @event)
         {
-            var aggregate = LoadAggregate(@event.AggregateId);
+            var aggregate = eventStoreService.LoadAggregate<Extrato>(@event.AggregateId);
             snapshotterWriter.AddSnapshot(aggregate);
-        }
-
-        private Extrato LoadAggregate(Guid aggregateId)
-        {
-            throw new NotImplementedException();
         }
 
         private bool ShouldCreateASnapshot(DomainEvent @event)
