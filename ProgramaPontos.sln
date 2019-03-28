@@ -58,6 +58,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{F1B950
 		docker\run_containers.bat = docker\run_containers.bat
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "snapshotter", "snapshotter", "{188B79E6-A22E-4C24-A2D7-A7A357A3CB45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.Infra.Snapshotter", "ProgramaPontos.Infra.Snapshotter\ProgramaPontos.Infra.Snapshotter.csproj", "{987E9B7D-35D4-4CD6-B487-C9F4136EC64B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.Infra.Snapshotter.Core", "ProgramaPontos.Infra.Snapshotter.Core\ProgramaPontos.Infra.Snapshotter.Core.csproj", "{6BE8BDBF-E5ED-46F4-89CD-8C2BC30659CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.Infra.Snapshotter.MongoDB", "ProgramaPontos.Infra.Snapshotter.MongoDB\ProgramaPontos.Infra.Snapshotter.MongoDB.csproj", "{71FFCA1B-4AC6-474C-BB30-CD9BA38FE9E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +128,18 @@ Global
 		{77380DAB-CA9A-487C-8FA5-CD2C0A6315BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77380DAB-CA9A-487C-8FA5-CD2C0A6315BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77380DAB-CA9A-487C-8FA5-CD2C0A6315BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987E9B7D-35D4-4CD6-B487-C9F4136EC64B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987E9B7D-35D4-4CD6-B487-C9F4136EC64B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987E9B7D-35D4-4CD6-B487-C9F4136EC64B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987E9B7D-35D4-4CD6-B487-C9F4136EC64B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE8BDBF-E5ED-46F4-89CD-8C2BC30659CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE8BDBF-E5ED-46F4-89CD-8C2BC30659CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE8BDBF-E5ED-46F4-89CD-8C2BC30659CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE8BDBF-E5ED-46F4-89CD-8C2BC30659CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71FFCA1B-4AC6-474C-BB30-CD9BA38FE9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71FFCA1B-4AC6-474C-BB30-CD9BA38FE9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71FFCA1B-4AC6-474C-BB30-CD9BA38FE9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71FFCA1B-4AC6-474C-BB30-CD9BA38FE9E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +169,10 @@ Global
 		{1FAFB511-A965-40FB-AAB4-FB76987D2D4A} = {C0CFD9A6-F72D-4F5B-8297-C877E944CFDD}
 		{C75D4ECF-5A2B-4F25-945F-84659B0567DC} = {70950F36-A93D-42A7-B0FF-632E6A008A4C}
 		{77380DAB-CA9A-487C-8FA5-CD2C0A6315BE} = {C75D4ECF-5A2B-4F25-945F-84659B0567DC}
+		{188B79E6-A22E-4C24-A2D7-A7A357A3CB45} = {170D3ABD-1640-41D6-9E63-08CB9354A6E6}
+		{987E9B7D-35D4-4CD6-B487-C9F4136EC64B} = {188B79E6-A22E-4C24-A2D7-A7A357A3CB45}
+		{6BE8BDBF-E5ED-46F4-89CD-8C2BC30659CF} = {188B79E6-A22E-4C24-A2D7-A7A357A3CB45}
+		{71FFCA1B-4AC6-474C-BB30-CD9BA38FE9E5} = {188B79E6-A22E-4C24-A2D7-A7A357A3CB45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB9814F9-09E8-4692-82B8-5A7CF0F501BA}

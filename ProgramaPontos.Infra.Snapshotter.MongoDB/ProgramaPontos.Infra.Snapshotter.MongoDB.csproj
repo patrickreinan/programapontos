@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProgramaPontos.Infra.Snapshotter.Core\ProgramaPontos.Infra.Snapshotter.Core.csproj" />
+  </ItemGroup>
+
+</Project>
