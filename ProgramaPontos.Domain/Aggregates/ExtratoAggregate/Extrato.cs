@@ -15,7 +15,7 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
 
         private Extrato(IEnumerable<IDomainEvent> history) : base(history) { }
 
-        private Extrato() : base(null) { }
+        private Extrato() : base() { }
 
         public Extrato(Guid id, Guid participanteId) : this()
         {
@@ -63,5 +63,11 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
             Saldo = e.Pontos;
         }
 
+        private void ApplySnapshot(Extrato aggregate)
+        {
+            ParticipanteId = aggregate.ParticipanteId;
+            Saldo = aggregate.Saldo;
+            Movimentacoes.AddRange(aggregate.Movimentacoes);
+        }
     }
 }

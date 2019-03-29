@@ -12,7 +12,7 @@ namespace ProgramaPontos.Domain.Aggregates.ParticipanteAggregate
         public string Nome { get; private set; }
         public string Email { get; private set; }
         private Participante(IEnumerable<IDomainEvent> history) : base(history) { }
-        private Participante() : base(null) { }
+        private Participante() : base() { }
 
 
         public Participante(

@@ -12,6 +12,8 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
         private readonly List<IDomainEvent> changes = new List<IDomainEvent>();
 
+        protected AggregateRoot() : this(history: null) { }
+        
         protected AggregateRoot(IEnumerable<IDomainEvent> history)
         {
             if (history == null) return;
@@ -20,7 +22,28 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
         }
 
-        public IEnumerable<IDomainEvent> GetUncommittedChanges() => changes;
+        protected AggregateRoot(IAggregateRoot aggregateSnapshot)
+        {
+            InvokeApplySnapshot(aggregateSnapshot);
+        }
+
+        private void InvokeApplySnapshot(IAggregateRoot aggregateSnapshot)
+        {
+
+            Id = aggregateSnapshot.Id;
+            Version = aggregateSnapshot.Version;
+
+            var method = this.GetType().GetMethod("ApplySnapshot", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new Type[] { GetType() }, null);
+
+            if (method != null)
+                method.Invoke(this, new[] { aggregateSnapshot });
+        }
+
+        public IEnumerable<IDomainEvent> GetUncommittedChanges()
+        {
+            return changes;
+        }
+
         public void MarkChangesAsCommitted()
         {
             changes.Clear();
@@ -42,7 +65,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
         private void InvokeApply(IDomainEvent @event)
         {
 
-            MethodInfo method = this.GetType().GetMethod("Apply",BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new Type[] { @event.GetType() }, null);
+            var method = this.GetType().GetMethod("Apply", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new Type[] { @event.GetType() }, null);
 
             if (method != null)
                 method.Invoke(this, new[] { @event });

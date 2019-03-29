@@ -45,6 +45,17 @@ namespace ProgramaPontos.Domain.Testes
 
         }
 
+        [Fact(DisplayName = "Carregar do Snapshot")]
+        public void CarregarSnapshot()
+        {
+            //arrange
+           // var extratoSnapshot = @"{ ""}";
+
+            //act
+            
+            
+
+        }
         
 
         [Fact(DisplayName = "Quebra")]
