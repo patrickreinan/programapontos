@@ -1,4 +1,5 @@
 ﻿using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.Domain.Core.Snapshot;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -13,7 +14,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
         private readonly List<IDomainEvent> changes = new List<IDomainEvent>();
 
         protected AggregateRoot() : this(history: null) { }
-        
+
         protected AggregateRoot(IEnumerable<IDomainEvent> history)
         {
             if (history == null) return;
@@ -21,23 +22,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
                 ApplyChange(historyItem, false);
 
         }
-
-        protected AggregateRoot(IAggregateRoot aggregateSnapshot)
-        {
-            InvokeApplySnapshot(aggregateSnapshot);
-        }
-
-        private void InvokeApplySnapshot(IAggregateRoot aggregateSnapshot)
-        {
-
-            Id = aggregateSnapshot.Id;
-            Version = aggregateSnapshot.Version;
-
-            var method = this.GetType().GetMethod("ApplySnapshot", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new Type[] { GetType() }, null);
-
-            if (method != null)
-                method.Invoke(this, new[] { aggregateSnapshot });
-        }
+       
 
         public IEnumerable<IDomainEvent> GetUncommittedChanges()
         {
