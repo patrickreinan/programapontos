@@ -15,10 +15,15 @@ namespace ProgramaPontos.Domain.Core.Snapshot
             this.snapshotStore = snapshotStore;
         }
 
-        public T LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot
+        public T LoadSnapshot<T>(Guid aggregateId) where T : IAggregateRoot
         {
             var snapshot = snapshotStore.GetSnapshotFromAggreate<T>(aggregateId);
             return CreateAggregateFromSnapshot(snapshot);
+        }
+
+        public void SaveSnapshot<T>(T aggregateRoot) where T : IAggregateRoot
+        {
+            snapshotStore.SaveSnapshot(aggregateRoot);
         }
 
         private T CreateAggregateFromSnapshot<T>(ISnapshot<T> snapshot ) where T : IAggregateRoot

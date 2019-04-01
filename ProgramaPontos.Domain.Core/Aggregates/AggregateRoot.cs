@@ -22,7 +22,20 @@ namespace ProgramaPontos.Domain.Core.Aggregates
                 ApplyChange(historyItem, false);
 
         }
-       
+        protected AggregateRoot(ISnapshot snapshot)
+        {
+            Version = snapshot.Version;
+            Id = snapshot.Id;
+            InvokeApplySnapshot(snapshot);
+        }
+
+        private void InvokeApplySnapshot(ISnapshot snapshot)
+        {
+            var method = this.GetType().GetMethod("ApplySnapshot", BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, new Type[] { typeof(ISnapshot) }, null);
+
+            if (method != null)
+                method.Invoke(this, new[] { snapshot });
+        }
 
         public IEnumerable<IDomainEvent> GetUncommittedChanges()
         {

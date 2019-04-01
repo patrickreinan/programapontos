@@ -3,10 +3,15 @@ using ProgramaPontos.Domain.Core.Aggregates;
 
 namespace ProgramaPontos.Domain.Core.Snapshot
 {
-    public interface ISnapshot<T> where T : IAggregateRoot
+    public interface ISnapshot
     {
-        T Aggregate { get; }
         Guid Id { get; }
         int Version { get; }
+    }
+
+    public interface ISnapshot<T> : ISnapshot where T :IAggregateRoot
+    {
+        T Aggregate { get; }
+        
     }
 }

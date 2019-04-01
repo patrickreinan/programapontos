@@ -1,6 +1,7 @@
 ﻿using ProgramaPontos.Domain.Core;
 using ProgramaPontos.Domain.Core.Aggregates;
 using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.Domain.Events;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
 
         private Extrato() : base() { }
 
-        private Extrato(Guid id, int version, Guid participanteId, List<Movimentacao> movimentacoes, int saldo) : base(id, version)
+        private Extrato(ISnapshot<Extrato> snapshot) : base(snapshot)
         {
-            ParticipanteId = participanteId;
-            Movimentacoes = movimentacoes;
-            Saldo = saldo;
+
+            ParticipanteId = snapshot.Aggregate.ParticipanteId;
+            Movimentacoes = snapshot.Aggregate.Movimentacoes;
+            Saldo = snapshot.Aggregate.Saldo;
+
         }
 
         public Extrato(Guid id, Guid participanteId) : this()
