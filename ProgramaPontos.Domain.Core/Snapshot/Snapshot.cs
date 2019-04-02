@@ -3,23 +3,22 @@ using System;
 
 namespace ProgramaPontos.Domain.Core.Snapshot
 {
-    public class Snapshot : ISnapshot
+    public class Snapshot<T> : ISnapshot<T> where T : IAggregateRoot 
     {
 
         public Guid Id { get; }
         public int Version { get; }
-        public IAggregateRoot Aggregate { get; }
+        public T Aggregate { get; }
 
-        public Snapshot(IAggregateRoot aggregate)
+        
+
+        public Snapshot(T aggregate)
         {
             Id = aggregate.Id;
-            Version = aggregate.Version.Value;
+            Version = aggregate.Version != null ? aggregate.Version.Value : default(int);
             Aggregate = aggregate;
         }
 
-        public T GetAggregateAs<T>() where T : IAggregateRoot
-        {
-            return (T)Aggregate;
-        }
+     
     }
 }
