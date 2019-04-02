@@ -23,7 +23,7 @@ namespace ProgramaPontos.Domain.Core.Snapshot
 
         public void SaveSnapshot<T>(T aggregateRoot) where T : IAggregateRoot
         {
-            snapshotStore.SaveSnapshot(aggregateRoot);
+            snapshotStore.SaveSnapshot<T>(aggregateRoot);
         }
 
         private T CreateAggregateFromSnapshot<T>(ISnapshot<T> snapshot ) where T : IAggregateRoot

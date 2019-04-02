@@ -7,7 +7,7 @@ namespace ProgramaPontos.Domain.Core.Snapshot
     {
         ISnapshot<T> GetSnapshotFromAggreate<T>(Guid aggregateId) where T : IAggregateRoot;
 
-        void SaveSnapshot(IAggregateRoot aggregateRoot);
+        void SaveSnapshot<T>(T aggregateRoot) where T : IAggregateRoot;
 
 
     }
