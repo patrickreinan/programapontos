@@ -8,6 +8,7 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
 {
     class SnapshotItem
     {
+        public Guid AggregateId { get; private set; }
         public int Version { get; private set; }
         public string SnapshotType { get; private set; }
         public byte[] Data { get; private set; }
@@ -17,10 +18,12 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         {
             return new SnapshotItem()
             {
+                AggregateId = snapshot.Aggregate.Id,
                 Version = snapshot.Version,
                 SnapshotType = $"{snapshot.GetType().FullName}, {snapshot.GetType().Assembly.GetName().Name}",
                 Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot)),
                 DateTime = DateTime.Now
+
 
             };
 

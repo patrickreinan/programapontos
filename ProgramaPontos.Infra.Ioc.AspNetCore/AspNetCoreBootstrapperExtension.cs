@@ -15,6 +15,7 @@ using ProgramaPontos.ReadModel.Core;
 using ProgramaPontos.ReadModel.ElasticSearch;
 using ProgramaPontos.ReadModel.ElasticSearch.Extensions;
 using ProgramaPontos.ReadModel.Extrato;
+using ProgramaPontos.Snapshot.SnapshotStore.MongoDB;
 
 namespace ProgramaPontos.Infra.Ioc.AspNetCore
 {
@@ -70,6 +71,10 @@ namespace ProgramaPontos.Infra.Ioc.AspNetCore
             services
                 .AddScoped<IExtratoParticipanteRepository, ExtratoParticipanteRepository>();
 
+            #endregion
+
+            #region Snapshot
+            services.AddMongoSnapshotStore()
             #endregion
 
             return services;
