@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ProgramaPontos.Domain.Core.Snapshot
 {
-    public sealed class SnapshotService
+    public sealed class SnapshotService : ISnapshotService
     {
         private readonly ISnapshotStore snapshotStore;
 
@@ -26,7 +26,7 @@ namespace ProgramaPontos.Domain.Core.Snapshot
             snapshotStore.SaveSnapshot<T>(aggregateRoot);
         }
 
-        private T CreateAggregateFromSnapshot<T>(ISnapshot<T> snapshot ) where T : IAggregateRoot
+        private T CreateAggregateFromSnapshot<T>(ISnapshot<T> snapshot) where T : IAggregateRoot
         {
             return (T)typeof(T)
                  .GetConstructor(

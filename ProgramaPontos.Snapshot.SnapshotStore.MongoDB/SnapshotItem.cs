@@ -21,7 +21,8 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
                 AggregateId = snapshot.Aggregate.Id,
                 Version = snapshot.Version,
                 SnapshotType = $"{snapshot.GetType().FullName}, {snapshot.GetType().Assembly.GetName().Name}",
-                Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot)),
+                Data = null, //colocar dynamic aqui...
+                //,Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot.Aggregate)),
                 DateTime = DateTime.Now
 
 

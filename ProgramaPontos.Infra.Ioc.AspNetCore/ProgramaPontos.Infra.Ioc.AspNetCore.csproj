@@ -20,6 +20,7 @@
     <ProjectReference Include="..\ProgramaPontos.Infra.EventStore.MongoDB\ProgramaPontos.Infra.EventStore.MongoDB.csproj" />
     <ProjectReference Include="..\ProgramaPontos.Infra.Repository\ProgramaPontos.Infra.Repository.csproj" />
     <ProjectReference Include="..\ProgramaPontos.ReadModel.ElasticSearch\ProgramaPontos.ReadModel.ElasticSearch.csproj" />
+    <ProjectReference Include="..\ProgramaPontos.Snapshot.SnapshotStore.MongoDB\ProgramaPontos.Snapshot.SnapshotStore.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

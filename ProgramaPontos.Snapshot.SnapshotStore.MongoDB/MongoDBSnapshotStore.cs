@@ -26,8 +26,7 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         {
             var snapshot = new Snapshot<T>(aggregateRoot);
             var snapshotItem = SnapshotItem.FromDomainSnapshot(snapshot);
-
-            collection.UpdateOne<SnapshotItem>(f=>f.)
+            collection.ReplaceOne(f => f.AggregateId == aggregateRoot.Id, snapshotItem, new UpdateOptions() { IsUpsert = true });
 
         }
     }

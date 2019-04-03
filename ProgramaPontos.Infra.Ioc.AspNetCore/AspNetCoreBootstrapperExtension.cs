@@ -6,6 +6,7 @@ using ProgramaPontos.Application.CommandStack.Core;
 using ProgramaPontos.Application.Services;
 using ProgramaPontos.Application.Services.Interfaces;
 using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.Domain.Repository;
 using ProgramaPontos.Domain.Services;
 using ProgramaPontos.Infra.Bus.EventBusRabbitMQ;
@@ -74,7 +75,10 @@ namespace ProgramaPontos.Infra.Ioc.AspNetCore
             #endregion
 
             #region Snapshot
-            services.AddMongoSnapshotStore()
+            services
+                .AddMongoSnapshotStore(configuration)
+                .AddSingleton<ISnapshotService, SnapshotService>();
+            
             #endregion
 
             return services;
