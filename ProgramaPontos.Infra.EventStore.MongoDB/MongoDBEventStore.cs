@@ -23,11 +23,23 @@ namespace ProgramaPontos.Infra.EventStore.MongoDB
                .Find(f => f.AggregateId == aggregateId.ToString())
                .SortBy(s => s.DateTime)
                .ToEnumerable();
+            
+            return ToDomainEventEnumerable(eventStoreItems);
+        }
 
+        public IEnumerable<IDomainEvent> GetEventsFromAggregateAfterVersion(Guid aggregateId, int version)
+        {
+            var eventStoreItems = collection
+             .Find(f => f.AggregateId == aggregateId.ToString() && f.Version > version)
+             .SortBy(s => s.DateTime)
+             .ToEnumerable();
+            return ToDomainEventEnumerable(eventStoreItems);
+        }
 
+        private static IEnumerable<IDomainEvent> ToDomainEventEnumerable(IEnumerable<EventStoreItem> eventStoreItems)
+        {
             return (from EventStoreItem item in eventStoreItems
                     select EventStoreItem.ToDomainEvent(item));
-
         }
 
         public int? GetVersionByAggregate(Guid aggregateId)

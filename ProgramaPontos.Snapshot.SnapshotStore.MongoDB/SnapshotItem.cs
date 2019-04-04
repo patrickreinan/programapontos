@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ProgramaPontos.Domain.Core.Aggregates;
 using ProgramaPontos.Domain.Core.Snapshot;
 using System;
@@ -8,7 +9,8 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
 {
     class SnapshotItem
     {
-        public Guid AggregateId { get; private set; }
+        public string Id { get; private set; }
+        public string AggregateId { get; private set; }
         public int Version { get; private set; }
         public string SnapshotType { get; private set; }
         public byte[] Data { get; private set; }
@@ -18,11 +20,11 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         {
             return new SnapshotItem()
             {
-                AggregateId = snapshot.Aggregate.Id,
+                Id = Guid.NewGuid().ToString(),
+                AggregateId = snapshot.Aggregate.Id.ToString(),
                 Version = snapshot.Version,
                 SnapshotType = $"{snapshot.GetType().FullName}, {snapshot.GetType().Assembly.GetName().Name}",
-                Data = null, //colocar dynamic aqui...
-                //,Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot.Aggregate)),
+                Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot.Aggregate)),
                 DateTime = DateTime.Now
 
 
@@ -33,7 +35,13 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
 
         public static Snapshot<T> ToSnapshot<T>(SnapshotItem snapshotItem) where T : IAggregateRoot
         {
-            return null;
+            var json = Encoding.UTF8.GetString(snapshotItem.Data);
+            dynamic data = JObject.Parse(json);
+            // var aggregate = (T)data;
+            //dynamic obj = null;
+            //var o =(T)JsonConvert.DeserializeAnonymousType(json, obj);
+
+            return new Snapshot<T>(default(T));
         }
 
 

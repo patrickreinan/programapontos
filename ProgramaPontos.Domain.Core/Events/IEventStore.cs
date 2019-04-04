@@ -11,6 +11,6 @@ namespace ProgramaPontos.Domain.Core.Events
         int? GetVersionByAggregate(Guid aggregateId);
 
         IEnumerable<IDomainEvent> GetEventsFromAggregate(Guid aggregateId);
-       
+        IEnumerable<IDomainEvent> GetEventsFromAggregateAfterVersion(Guid aggregateId, int version);
     }
 }

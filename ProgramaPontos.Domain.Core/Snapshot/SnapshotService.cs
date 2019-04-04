@@ -18,7 +18,10 @@ namespace ProgramaPontos.Domain.Core.Snapshot
         public T LoadSnapshot<T>(Guid aggregateId) where T : IAggregateRoot
         {
             var snapshot = snapshotStore.GetSnapshotFromAggreate<T>(aggregateId);
-            return CreateAggregateFromSnapshot(snapshot);
+            if (snapshot == null)
+                return default(T);
+                        
+            return snapshot.Aggregate;
         }
 
         public void SaveSnapshot<T>(T aggregateRoot) where T : IAggregateRoot
@@ -26,14 +29,7 @@ namespace ProgramaPontos.Domain.Core.Snapshot
             snapshotStore.SaveSnapshot<T>(aggregateRoot);
         }
 
-        private T CreateAggregateFromSnapshot<T>(ISnapshot<T> snapshot) where T : IAggregateRoot
-        {
-            return (T)typeof(T)
-                 .GetConstructor(
-                 BindingFlags.Instance | BindingFlags.NonPublic,
-                 null, new Type[] { typeof(ISnapshot<T>) }, new ParameterModifier[0])
-               .Invoke(new object[] { snapshot });
-        }
+      
 
     }
 

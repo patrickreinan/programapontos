@@ -19,14 +19,16 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
 
         public ISnapshot<T> GetSnapshotFromAggreate<T>(Guid aggregateId) where T : IAggregateRoot
         {
-            throw new NotImplementedException();
+            var result = collection.Find(f => f.AggregateId == aggregateId.ToString()).FirstOrDefault();
+            if (result == null) return null;
+            return SnapshotItem.ToSnapshot<T>(result);
         }
 
         public void SaveSnapshot<T>(T aggregateRoot) where T : IAggregateRoot
         {
             var snapshot = new Snapshot<T>(aggregateRoot);
             var snapshotItem = SnapshotItem.FromDomainSnapshot(snapshot);
-            collection.ReplaceOne(f => f.AggregateId == aggregateRoot.Id, snapshotItem, new UpdateOptions() { IsUpsert = true });
+            collection.ReplaceOne(f => f.AggregateId == aggregateRoot.Id.ToString(), snapshotItem, new UpdateOptions() { IsUpsert = true });
 
         }
     }

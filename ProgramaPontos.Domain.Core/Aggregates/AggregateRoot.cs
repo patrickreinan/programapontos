@@ -17,15 +17,25 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
         protected AggregateRoot(IEnumerable<IDomainEvent> history)
         {
+            ApplyHistory(history);
+
+        }
+
+        protected virtual void ApplySnapshot(ISnapshot snapshot) { }
+
+        private void ApplyHistory(IEnumerable<IDomainEvent> history)
+        {
             if (history == null) return;
             foreach (var historyItem in history)
                 ApplyChange(historyItem, false);
-
         }
-        protected AggregateRoot(ISnapshot snapshot)
+
+        protected AggregateRoot(ISnapshot snapshot, IEnumerable<IDomainEvent> history)
         {
             Version = snapshot.Version;
-            Id = snapshot.Id;           
+            Id = snapshot.Id;
+            ApplySnapshot(snapshot);            
+            ApplyHistory(history);
         }
             
         public IEnumerable<IDomainEvent> GetUncommittedChanges()
@@ -61,6 +71,8 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
 
         }
+
+      
 
 
     }

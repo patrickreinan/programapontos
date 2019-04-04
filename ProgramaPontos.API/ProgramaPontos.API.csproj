@@ -22,4 +22,10 @@
     <ProjectReference Include="..\ProgramaPontos.Infra.Ioc.AspNetCore\ProgramaPontos.Infra.Ioc.AspNetCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

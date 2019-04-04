@@ -8,51 +8,42 @@ using System.Collections.Generic;
 
 namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
 {
-    public class Extrato : AggregateRoot
+    public class Extrato : AggregateRoot, ISnapshotAggregate
     {
         public Guid ParticipanteId { get; private set; }
-        public List<Movimentacao> Movimentacoes { get; } = new List<Movimentacao>();
+        public List<Movimentacao> Movimentacoes { get; private set; } = new List<Movimentacao>();
         public int Saldo { get; private set; }
 
         private Extrato(IEnumerable<IDomainEvent> history) : base(history) { }
 
         private Extrato() : base() { }
 
-        private Extrato(ISnapshot<Extrato> snapshot) : base(snapshot)
-        {
+        private Extrato(ISnapshot<Extrato> snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history) { }
 
-            ParticipanteId = snapshot.Aggregate.ParticipanteId;
-            Movimentacoes = snapshot.Aggregate.Movimentacoes;
-            Saldo = snapshot.Aggregate.Saldo;
+        protected override void ApplySnapshot(ISnapshot snapshot)
+        {
+            base.ApplySnapshot(snapshot);
+            var extratoSnapshot = (ISnapshot<Extrato>)snapshot;
+            ParticipanteId = extratoSnapshot.Aggregate.ParticipanteId;
+            Movimentacoes = extratoSnapshot.Aggregate.Movimentacoes;
+            Saldo = extratoSnapshot.Aggregate.Saldo;
 
         }
 
-        public Extrato(Guid id, Guid participanteId) : this()
-        {
-            ApplyChange(new ExtratoCriadoDomainEvent(id, participanteId));
-        }
+        public Extrato(Guid id, Guid participanteId) : this() => ApplyChange(new ExtratoCriadoDomainEvent(id, participanteId));
 
-        public void AdicionarPontos(int pontos)
-        {
-            ApplyChange(new ExtratoPontosAdicionadosDomainEvent( Id, ParticipanteId, pontos));            
-        }
+        public void AdicionarPontos(int pontos) => ApplyChange(new ExtratoPontosAdicionadosDomainEvent(Id, ParticipanteId, pontos));
 
-        public void RemoverPontos(int pontos)
-        {
-            ApplyChange(new ExtratoPontosRemovidosDomainEvent(Id, ParticipanteId, pontos));
-        }
+        public void RemoverPontos(int pontos) => ApplyChange(new ExtratoPontosRemovidosDomainEvent(Id, ParticipanteId, pontos));
 
-        public void EfetuarQuebra(int pontos)
-        {
-            ApplyChange(new ExtratoQuebraAdicionadaDomainEvent( Id, ParticipanteId, pontos));
-           
-        }
+        public void EfetuarQuebra(int pontos) => ApplyChange(new ExtratoQuebraAdicionadaDomainEvent(Id, ParticipanteId, pontos));
 
         private void Apply(ExtratoCriadoDomainEvent extratoCriadoDomainEvent)
         {
             Id = extratoCriadoDomainEvent.AggregateId;
             ParticipanteId = extratoCriadoDomainEvent.ParticipanteId;
             Saldo = 0;
+            
         }
 
         private void Apply(ExtratoPontosAdicionadosDomainEvent e)
@@ -73,6 +64,6 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
             Saldo = e.Pontos;
         }
 
-        
+
     }
 }
