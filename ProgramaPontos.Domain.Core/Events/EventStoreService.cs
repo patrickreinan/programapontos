@@ -13,13 +13,13 @@ namespace ProgramaPontos.Domain.Core.Events
     {
         private readonly IEventBus eventBus;
         private readonly IEventStore eventStore;
-        private readonly ISnapshotService snapshotService;
+        private readonly ISnapshotStore snapshotStore;
 
-        public EventStoreService(IEventBus eventBus, IEventStore eventStore, ISnapshotService snapshotService)
+        public EventStoreService(IEventBus eventBus, IEventStore eventStore, ISnapshotStore snapshotStore)
         {
             this.eventBus = eventBus;
             this.eventStore = eventStore;
-            this.snapshotService = snapshotService;
+            this.snapshotStore = snapshotStore;
         }
 
         public T LoadAggregate<T>(Guid aggregateId) where T: IAggregateRoot
@@ -39,12 +39,12 @@ namespace ProgramaPontos.Domain.Core.Events
 
         private T LoadFromSnapshot<T>(Guid aggregateId) where T : IAggregateRoot
         {
-            var aggregate = snapshotService.LoadSnapshot<T>(aggregateId);
+            var aggregateSnapshot = snapshotStore.GetSnapshotFromAggreate(aggregateId);
 
-            if (aggregate == null) return default(T);
+            if (aggregateSnapshot == null) return default(T);
 
-            var history = eventStore.GetEventsFromAggregateAfterVersion(aggregate.Id, aggregate.Version.Value);
-            return CreateAggregateFromSnapshotAndHistory<T>(aggregate, history);
+            var history = eventStore.GetEventsFromAggregateAfterVersion(aggregateSnapshot.Id, aggregateSnapshot.Version);
+            return CreateAggregateFromSnapshotAndHistory<T>(aggregateSnapshot, history);
 
 
         }
@@ -70,12 +70,12 @@ namespace ProgramaPontos.Domain.Core.Events
         }
 
 
-        private T CreateAggregateFromSnapshotAndHistory<T>(T snapshot, IEnumerable<IDomainEvent> history)
+        private T CreateAggregateFromSnapshotAndHistory<T>(AggregateSnapshot snapshot, IEnumerable<IDomainEvent> history)
         {
             return (T)typeof(T)
                  .GetConstructor(
                  BindingFlags.Instance | BindingFlags.NonPublic,
-                 null, new Type[] { typeof(T), typeof(IEnumerable<IDomainEvent>) }, new ParameterModifier[0])
+                 null, new Type[] { typeof(AggregateSnapshot), typeof(IEnumerable<IDomainEvent>) }, new ParameterModifier[0])
                .Invoke(new object[] { snapshot, history });
         }
 

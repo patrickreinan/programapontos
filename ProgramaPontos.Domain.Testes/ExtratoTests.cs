@@ -48,41 +48,7 @@ namespace ProgramaPontos.Domain.Testes
 
         }
 
-        [Fact(DisplayName = "Carregar do Snapshot")]
-        public void CarregarSnapshot()
-        {
-
-            //arrange...
-            var extratoSnapshot = CriarExtrato();
-            extratoSnapshot.AdicionarPontos(100);
-
-
-            //act...
-            var snapshot = new Snapshot<Extrato>(extratoSnapshot);
-            var loaded = CreateAggregateFromSnapshot(snapshot);
-
-            //assert...
-            Assert.True(
-                snapshot.Aggregate.Id == loaded.Id &&
-                snapshot.Aggregate.ParticipanteId == loaded.ParticipanteId &&
-                snapshot.Aggregate.Saldo == loaded.Saldo &&
-                snapshot.Aggregate.Movimentacoes == loaded.Movimentacoes
-                );
-            
-
-        }
-
-
-        private T CreateAggregateFromSnapshot<T>(ISnapshot<T> snapshot) where T : IAggregateRoot
-        {
-            return (T)typeof(T)
-                 .GetConstructor(
-                 BindingFlags.Instance | BindingFlags.NonPublic,
-                 null, new Type[] { typeof(ISnapshot<T>) }, new ParameterModifier[0])
-               .Invoke(new object[] { snapshot });
-        }
-
-
+      
         [Fact(DisplayName = "Quebra")]
         public void Quebra()
         {

@@ -1,4 +1,5 @@
-﻿using ProgramaPontos.Domain.Core.Events;
+﻿using ProgramaPontos.Domain;
+using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Snapshot;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
         }
 
-        protected virtual void ApplySnapshot(ISnapshot snapshot) { }
+        protected virtual void ApplySnapshot(AggregateSnapshot snapshot) { } 
 
         private void ApplyHistory(IEnumerable<IDomainEvent> history)
         {
@@ -30,7 +31,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
                 ApplyChange(historyItem, false);
         }
 
-        protected AggregateRoot(ISnapshot snapshot, IEnumerable<IDomainEvent> history)
+        protected AggregateRoot(AggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) 
         {
             Version = snapshot.Version;
             Id = snapshot.Id;

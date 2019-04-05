@@ -16,15 +16,15 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         public byte[] Data { get; private set; }
         public DateTime DateTime { get; private set; }
 
-        public static SnapshotItem FromDomainSnapshot<T>(Snapshot<T> snapshot) where T : IAggregateRoot
+        public static SnapshotItem FromDomainSnapshot(AggregateSnapshot snapshot)
         {
             return new SnapshotItem()
             {
-                Id = Guid.NewGuid().ToString(),
-                AggregateId = snapshot.Aggregate.Id.ToString(),
+                Id = snapshot.Id.ToString(),
+                AggregateId = snapshot.Id.ToString(),
                 Version = snapshot.Version,
                 SnapshotType = $"{snapshot.GetType().FullName}, {snapshot.GetType().Assembly.GetName().Name}",
-                Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot.Aggregate)),
+                Data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(snapshot)),
                 DateTime = DateTime.Now
 
 
@@ -33,15 +33,12 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         }
 
 
-        public static Snapshot<T> ToSnapshot<T>(SnapshotItem snapshotItem) where T : IAggregateRoot
+        public static AggregateSnapshot ToSnapshot(SnapshotItem snapshotItem)
         {
             var json = Encoding.UTF8.GetString(snapshotItem.Data);
-            dynamic data = JObject.Parse(json);
-            // var aggregate = (T)data;
-            //dynamic obj = null;
-            //var o =(T)JsonConvert.DeserializeAnonymousType(json, obj);
+            var type = Type.GetType(snapshotItem.SnapshotType);
+            return (AggregateSnapshot)JsonConvert.DeserializeObject(json, type);
 
-            return new Snapshot<T>(default(T));
         }
 
 

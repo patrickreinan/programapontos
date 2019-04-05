@@ -3,8 +3,10 @@ using ProgramaPontos.Domain.Core.Aggregates;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Snapshots;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
 {
@@ -12,21 +14,28 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
     {
         public Guid ParticipanteId { get; private set; }
         public List<Movimentacao> Movimentacoes { get; private set; } = new List<Movimentacao>();
-        public int Saldo { get; private set; }
+        public int Saldo { get; private set; } //vai virar método...
 
         private Extrato(IEnumerable<IDomainEvent> history) : base(history) { }
 
         private Extrato() : base() { }
 
-        private Extrato(ISnapshot<Extrato> snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history) { }
+        private Extrato(AggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history) { }
 
-        protected override void ApplySnapshot(ISnapshot snapshot)
+        protected override void ApplySnapshot(AggregateSnapshot snapshot)
         {
             base.ApplySnapshot(snapshot);
-            var extratoSnapshot = (ISnapshot<Extrato>)snapshot;
-            ParticipanteId = extratoSnapshot.Aggregate.ParticipanteId;
-            Movimentacoes = extratoSnapshot.Aggregate.Movimentacoes;
-            Saldo = extratoSnapshot.Aggregate.Saldo;
+            var extratoSnapshot = (ExtratoSnapshot)snapshot;
+            ParticipanteId = extratoSnapshot.ParticipanteId;
+
+            if (extratoSnapshot.Movimentacoes != null)
+                Movimentacoes = extratoSnapshot.Movimentacoes.Select(o =>
+                new Movimentacao(
+                    (DateTime)o.Data,
+                    (Movimentacao.TipoMovimentacao)Enum.Parse(typeof(Movimentacao.TipoMovimentacao), (string)o.Tipo),
+                    (int)o.Pontos)).ToList();
+
+            Saldo = extratoSnapshot.Saldo;
 
         }
 
@@ -43,7 +52,7 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
             Id = extratoCriadoDomainEvent.AggregateId;
             ParticipanteId = extratoCriadoDomainEvent.ParticipanteId;
             Saldo = 0;
-            
+
         }
 
         private void Apply(ExtratoPontosAdicionadosDomainEvent e)

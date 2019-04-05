@@ -76,8 +76,8 @@ namespace ProgramaPontos.Infra.Ioc.AspNetCore
 
             #region Snapshot
             services
-                .AddMongoSnapshotStore(configuration)
-                .AddSingleton<ISnapshotService, SnapshotService>();
+                .AddMongoSnapshotStore(configuration);
+                
             
             #endregion
 
