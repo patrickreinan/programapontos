@@ -1,6 +1,7 @@
 ﻿using ProgramaPontos.Domain.Core.Aggregates;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Exceptions;
+using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.Domain.Events;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace ProgramaPontos.Domain.Aggregates.ParticipanteAggregate
         public string Nome { get; private set; }
         public string Email { get; private set; }
         private Participante(IEnumerable<IDomainEvent> history) : base(history) { }
+        private Participante(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history)        {        }
+
+
         private Participante() : base() { }
 
 
@@ -27,6 +31,7 @@ namespace ProgramaPontos.Domain.Aggregates.ParticipanteAggregate
             ApplyChange(new ParticipanteCriadoDomainEvent(id, nome,email));
         }
 
+       
         private void ValidarEmail(string email)
         {
             if (string.IsNullOrEmpty(email))

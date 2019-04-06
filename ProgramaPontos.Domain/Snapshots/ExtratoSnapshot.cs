@@ -18,9 +18,9 @@ namespace ProgramaPontos.Domain.Snapshots
         {
         }
 
-        public int Saldo { get; private set; }
-        public Guid ParticipanteId { get; private set; }
-        public IEnumerable<(DateTime Data, int Pontos, string Tipo)> Movimentacoes { get; private set; }
+        public int Saldo { get;  set; }
+        public Guid ParticipanteId { get;  set; }
+        public IEnumerable<(DateTime Data, int Pontos, string Tipo)> Movimentacoes { get;  set; }
 
         
 

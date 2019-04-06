@@ -17,8 +17,8 @@ namespace ProgramaPontos.Domain.Snapshots
         {
         }
 
-        public string Nome { get; private set; }
-        public string Email { get; private set; }
+        public string Nome { get;  set; }
+        public string Email { get;  set; }
 
         protected override void LoadFromAggregate(IAggregateRoot aggregate)
         {

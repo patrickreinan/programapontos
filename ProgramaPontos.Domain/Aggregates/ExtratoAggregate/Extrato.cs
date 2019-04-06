@@ -14,15 +14,15 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
     {
         public Guid ParticipanteId { get; private set; }
         public List<Movimentacao> Movimentacoes { get; private set; } = new List<Movimentacao>();
-        public int Saldo { get; private set; } //vai virar método...
+        public int Saldo { get; private set; } 
 
         private Extrato(IEnumerable<IDomainEvent> history) : base(history) { }
 
         private Extrato() : base() { }
 
-        private Extrato(AggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history) { }
+        private Extrato(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history) { }
 
-        protected override void ApplySnapshot(AggregateSnapshot snapshot)
+        protected override void ApplySnapshot(IAggregateSnapshot snapshot)
         {
             base.ApplySnapshot(snapshot);
             var extratoSnapshot = (ExtratoSnapshot)snapshot;

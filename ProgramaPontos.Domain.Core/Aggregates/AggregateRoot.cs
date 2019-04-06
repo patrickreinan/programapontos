@@ -22,7 +22,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
         }
 
-        protected virtual void ApplySnapshot(AggregateSnapshot snapshot) { } 
+        protected virtual void ApplySnapshot(IAggregateSnapshot snapshot) { } 
 
         private void ApplyHistory(IEnumerable<IDomainEvent> history)
         {
@@ -31,7 +31,7 @@ namespace ProgramaPontos.Domain.Core.Aggregates
                 ApplyChange(historyItem, false);
         }
 
-        protected AggregateRoot(AggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) 
+        protected AggregateRoot(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) 
         {
             Version = snapshot.Version;
             Id = snapshot.Id;

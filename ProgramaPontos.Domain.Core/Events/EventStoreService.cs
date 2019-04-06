@@ -21,13 +21,13 @@ namespace ProgramaPontos.Domain.Core.Events
             this.eventStore = eventStore;
             this.snapshotStore = snapshotStore;
         }
-
+           
         public T LoadAggregate<T>(Guid aggregateId) where T: IAggregateRoot
         {
             T result = default(T);
             if (IsSnapshotAggregate<T>())
             {
-                result = LoadFromSnapshot<T>(aggregateId);
+                result = TryLoadFromSnapshotNullIfException<T>(aggregateId);
 
                     return result != null 
                     ? result 
@@ -37,15 +37,25 @@ namespace ProgramaPontos.Domain.Core.Events
                 return LoadFromHistory<T>(aggregateId);
         }
 
+        private T TryLoadFromSnapshotNullIfException<T>(Guid aggregateId) where T : IAggregateRoot
+        {
+            try
+            {
+                return LoadFromSnapshot<T>(aggregateId);
+            }
+            catch (Exception)
+            {
+
+                return default(T);
+            }
+        }
+
         private T LoadFromSnapshot<T>(Guid aggregateId) where T : IAggregateRoot
         {
             var aggregateSnapshot = snapshotStore.GetSnapshotFromAggreate(aggregateId);
-
             if (aggregateSnapshot == null) return default(T);
-
             var history = eventStore.GetEventsFromAggregateAfterVersion(aggregateSnapshot.Id, aggregateSnapshot.Version);
             return CreateAggregateFromSnapshotAndHistory<T>(aggregateSnapshot, history);
-
 
         }
 
@@ -70,12 +80,12 @@ namespace ProgramaPontos.Domain.Core.Events
         }
 
 
-        private T CreateAggregateFromSnapshotAndHistory<T>(AggregateSnapshot snapshot, IEnumerable<IDomainEvent> history)
+        private T CreateAggregateFromSnapshotAndHistory<T>(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history)
         {
             return (T)typeof(T)
                  .GetConstructor(
                  BindingFlags.Instance | BindingFlags.NonPublic,
-                 null, new Type[] { typeof(AggregateSnapshot), typeof(IEnumerable<IDomainEvent>) }, new ParameterModifier[0])
+                 null, new Type[] { typeof(IAggregateSnapshot), typeof(IEnumerable<IDomainEvent>) }, new ParameterModifier[0])
                .Invoke(new object[] { snapshot, history });
         }
 
@@ -104,6 +114,6 @@ namespace ProgramaPontos.Domain.Core.Events
             aggregate.MarkChangesAsCommitted();
         }
 
-
+     
     }
 }

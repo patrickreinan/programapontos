@@ -16,7 +16,7 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         public byte[] Data { get; private set; }
         public DateTime DateTime { get; private set; }
 
-        public static SnapshotItem FromDomainSnapshot(AggregateSnapshot snapshot)
+        public static SnapshotItem FromDomainSnapshot(IAggregateSnapshot snapshot)
         {
             return new SnapshotItem()
             {
@@ -31,13 +31,12 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
             };
 
         }
-
-
-        public static AggregateSnapshot ToSnapshot(SnapshotItem snapshotItem)
+                
+        public static IAggregateSnapshot ToSnapshot(SnapshotItem snapshotItem)
         {
             var json = Encoding.UTF8.GetString(snapshotItem.Data);
             var type = Type.GetType(snapshotItem.SnapshotType);
-            return (AggregateSnapshot)JsonConvert.DeserializeObject(json, type);
+            return  (IAggregateSnapshot)JsonConvert.DeserializeObject(json,type);
 
         }
 

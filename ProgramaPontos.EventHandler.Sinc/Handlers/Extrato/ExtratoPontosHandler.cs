@@ -58,12 +58,12 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
 
         private void XXX(Guid aggregateId, int version)
         {
-            //            if(version % 5 == 0)
-            //{
-            var extrato = eventStoreService.LoadAggregate<Domain.Aggregates.ExtratoAggregate.Extrato>(aggregateId);
-            var snapshot = new ExtratoSnapshot(extrato);
-            snapshotStore.SaveSnapshot(snapshot);
-            //}
+            if (version % 5 == 0)
+            {
+                var extrato = eventStoreService.LoadAggregate<Domain.Aggregates.ExtratoAggregate.Extrato>(aggregateId);
+                var snapshot = new ExtratoSnapshot(extrato);
+                snapshotStore.SaveSnapshot(snapshot);
+            }
         }
 
 

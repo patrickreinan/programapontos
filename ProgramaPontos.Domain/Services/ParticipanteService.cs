@@ -16,7 +16,6 @@ namespace ProgramaPontos.Domain.Services
         }
 
 
-        //se tivesse mais campos, poderia se utilizar de um DTO...
         public void AdicionarParticipante(Guid id, string nome, string email)
         {
 
