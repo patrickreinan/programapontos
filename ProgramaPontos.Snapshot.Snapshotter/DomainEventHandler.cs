@@ -11,35 +11,36 @@ namespace ProgramaPontos.Snapshot.Snapshotter
     {
         private readonly IEventStoreService eventStoreService;
         private readonly ISnapshotStore snapshotStore;
+        private readonly SnapshotSettings settings;
 
-        public DomainEventHandler(IEventStoreService eventStoreService, ISnapshotStore snapshotStore)
+        public DomainEventHandler(IEventStoreService eventStoreService, ISnapshotStore snapshotStore, SnapshotSettings settings)
         {
             this.eventStoreService = eventStoreService;
             this.snapshotStore = snapshotStore;
+            this.settings = settings;
         }
 
         public void Handle(T @event)
         {
-            /*
-            if (@event.Version % 5 == 0)
-            {
-                var extrato = eventStoreService.LoadAggregate<Domain.Aggregates.ExtratoAggregate.Extrato>(@event.AggregateId);
-                var snapshot = new ExtratoSnapshot(extrato);
-                snapshotStore.SaveSnapshot(snapshot);
-            }
-            */
 
+            if (@event.Version % settings.WhenVersionNumberIsDividedBy!=0)
+                return;
 
             var aggregate = eventStoreService.LoadAggregate(@event.AggregateId, GetAggregateTypeFromEvent(@event));
             var snapshot = BuildSnapshotFromAggregate(aggregate);
-
-            Console.WriteLine(@event.GetType().FullName);
+            snapshotStore.SaveSnapshot(snapshot);
+            Console.WriteLine($"{@event.AggregateId} Version: {@event.Version} snapshotted");
 
         }
 
-        private object BuildSnapshotFromAggregate(IAggregateRoot aggregate)
+        private IAggregateSnapshot BuildSnapshotFromAggregate(IAggregateRoot aggregate)
         {
-            throw new NotImplementedException();
+            var aggregateTypeName = aggregate.GetType().Name.Substring(aggregate.GetType().Name.LastIndexOf(".") + 1);
+            var snapshotTypeName = $"ProgramaPontos.Domain.Snapshots.{aggregateTypeName}Snapshot, ProgramaPontos.Domain";
+            var snapshotType = Type.GetType(snapshotTypeName);
+            return (IAggregateSnapshot)Activator.CreateInstance(snapshotType, aggregate);
+
+
         }
 
         private Type GetAggregateTypeFromEvent(IDomainEvent @event)
@@ -48,11 +49,11 @@ namespace ProgramaPontos.Snapshot.Snapshotter
             var aggregateAssembly = "ProgramaPontos.Domain";
 
             var typeNamespace = @event.GetType().Namespace;
-            var aggregateTypeName = typeNamespace.Substring(typeNamespace.LastIndexOf(".")+1);
+            var aggregateTypeName = typeNamespace.Substring(typeNamespace.LastIndexOf(".") + 1);
             var aggregateTypeFullName = $"{aggregateNamespace}.{aggregateTypeName}Aggregate.{aggregateTypeName}, {aggregateAssembly}";
 
             return Type.GetType(aggregateTypeFullName);
-            
+
         }
     }
 }

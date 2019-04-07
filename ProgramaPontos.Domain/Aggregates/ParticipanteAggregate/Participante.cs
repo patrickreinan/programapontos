@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace ProgramaPontos.Domain.Aggregates.ParticipanteAggregate
 {
-    public class Participante : AggregateRoot
+    public class Participante : AggregateRoot, ISnapshotAggregate<Participante>
     {
         public string Nome { get; private set; }
         public string Email { get; private set; }

@@ -73,9 +73,9 @@ namespace ProgramaPontos.Domain.Core.Events
             return CreateAggregateFromHistory<T>(history);
         }
 
-        private bool IsSnapshotAggregate<T>()
+        private bool IsSnapshotAggregate<T>() where T: IAggregateRoot
         {
-            return typeof(T).GetInterfaces().Any(i => i.FullName == typeof(ISnapshotAggregate).FullName);
+            return typeof(T).GetInterfaces().Any(i => i.FullName == typeof(ISnapshotAggregate<T>).FullName);
         }
 
         private T CreateAggregateFromHistory<T>(IEnumerable<IDomainEvent> history)

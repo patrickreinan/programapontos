@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
 {
-    public class Extrato : AggregateRoot, ISnapshotAggregate
+    public class Extrato : AggregateRoot, ISnapshotAggregate<Extrato>
     {
         public Guid ParticipanteId { get; private set; }
         public List<Movimentacao> Movimentacoes { get; private set; } = new List<Movimentacao>();

@@ -51,10 +51,13 @@ namespace ProgramaPontos.Snapshot.Snapshotter
         {
             serviceProvider = new ServiceCollection()
                     .AddProgramaPontosServices(configuration)
+                    .AddSingleton<SnapshotSettings>((context) => { return configuration.GetSection(nameof(SnapshotSettings)).Get<SnapshotSettings>(); })
                     .AddScoped(typeof(IDomainEventHandler<>), typeof(DomainEventHandler<>))
                     .BuildServiceProvider();
 
         }
+
+
 
         private static void LoadConfiguration()
         {
