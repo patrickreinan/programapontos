@@ -11,3 +11,5 @@ Nesta aplicação está sendo utilizado:
 </ul>
 
 O arquivo <a href="https://github.com/patrickreinan/programapontos/blob/master/docker/run_containers.bat">docker\run_containers.bat</a> cria todos os containers necessário para executar a aplicação.
+
+<b>Snapshot adicionado</b>
