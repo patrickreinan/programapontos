@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Extrato;
+using ProgramaPontos.Domain.Events.Participante;
 using ProgramaPontos.EventHandler.Sinc.Handlers.Extrato;
 using ProgramaPontos.EventHandler.Sinc.Handlers.Participante;
 using System;

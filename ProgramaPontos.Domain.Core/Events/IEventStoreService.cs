@@ -11,7 +11,7 @@ namespace ProgramaPontos.Domain.Core.Events
 
         T LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot;
 
-
+        IAggregateRoot LoadAggregate(Guid aggregateId, Type type);
 
 
 

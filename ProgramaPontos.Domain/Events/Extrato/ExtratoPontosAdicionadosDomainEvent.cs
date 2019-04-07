@@ -4,18 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProgramaPontos.Domain.Events
+namespace ProgramaPontos.Domain.Events.Extrato
 {
-    public class ExtratoPontosRemovidosDomainEvent : DomainEvent
+    public class ExtratoPontosAdicionadosDomainEvent : DomainEvent
     {
-        public ExtratoPontosRemovidosDomainEvent(
+        public ExtratoPontosAdicionadosDomainEvent(
             Guid aggregateId,
             Guid participanteId,
             int pontos
             )
         {
-            ParticipanteId = participanteId;
             AggregateId = aggregateId;
+            ParticipanteId = participanteId;           
             Pontos = pontos;
         }
 

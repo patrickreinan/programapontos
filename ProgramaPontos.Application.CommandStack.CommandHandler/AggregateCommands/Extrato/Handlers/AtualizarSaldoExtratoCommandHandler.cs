@@ -3,6 +3,7 @@ using ProgramaPontos.Application.CommandStack.AggregateCommands.Extrato.Commands
 using ProgramaPontos.Application.CommandStack.Core;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Extrato;
 using ProgramaPontos.Domain.Services;
 using System;
 using System.Collections.Generic;

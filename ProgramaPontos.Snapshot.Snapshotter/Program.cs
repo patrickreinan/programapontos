@@ -1,16 +1,17 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.EventHandler.Sinc;
 using ProgramaPontos.Infra.Ioc.AspNetCore;
 using System;
 using System.Reflection;
 
-namespace ProgramaPontos.EventHandler.Sinc
+namespace ProgramaPontos.Snapshot.Snapshotter
 {
     class Program
     {
-        private static IConfigurationRoot configuration;
-        private static IServiceProvider serviceProvider;
+        private static ServiceProvider serviceProvider;
+        private static IConfiguration configuration;
 
         static void Main(string[] args)
         {
@@ -21,7 +22,6 @@ namespace ProgramaPontos.EventHandler.Sinc
 
             Console.WriteLine("Waiting for events...");
             Console.Read();
-
         }
 
         private static void SetTitle()
@@ -46,16 +46,17 @@ namespace ProgramaPontos.EventHandler.Sinc
 
         }
 
+
         private static void BuildServiceProvider()
         {
             serviceProvider = new ServiceCollection()
                     .AddProgramaPontosServices(configuration)
-                    .AddDomainEventHandlers()
+                    .AddScoped(typeof(IDomainEventHandler<>), typeof(DomainEventHandler<>))
                     .BuildServiceProvider();
 
         }
 
-        static void LoadConfiguration()
+        private static void LoadConfiguration()
         {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);

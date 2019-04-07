@@ -3,6 +3,7 @@ using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Exceptions;
 using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Participante;
 using System;
 using System.Collections.Generic;
 

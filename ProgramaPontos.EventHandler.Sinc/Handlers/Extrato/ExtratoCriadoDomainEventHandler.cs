@@ -1,4 +1,5 @@
 ﻿using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Extrato;
 using ProgramaPontos.ReadModel.Core;
 using ProgramaPontos.ReadModel.Extrato;
 using System;

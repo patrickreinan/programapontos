@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{70950F36-A93D-42A7-B0FF-632E6A008A4C}"
 EndProject
@@ -60,7 +60,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{F1B950
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "snapshot", "snapshot", "{9634945A-AC9F-4548-B815-FF7F5AEA5C87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.Snapshot.SnapshotStore.MongoDB", "ProgramaPontos.Snapshot.SnapshotStore.MongoDB\ProgramaPontos.Snapshot.SnapshotStore.MongoDB.csproj", "{09D5D782-F3BC-448C-9541-8BD3439BBA37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramaPontos.Snapshot.SnapshotStore.MongoDB", "ProgramaPontos.Snapshot.SnapshotStore.MongoDB\ProgramaPontos.Snapshot.SnapshotStore.MongoDB.csproj", "{09D5D782-F3BC-448C-9541-8BD3439BBA37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.Snapshot.Snapshotter", "ProgramaPontos.Snapshot.Snapshotter\ProgramaPontos.Snapshot.Snapshotter.csproj", "{928902C8-F953-4A57-9237-A4042004BF31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,6 +130,10 @@ Global
 		{09D5D782-F3BC-448C-9541-8BD3439BBA37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09D5D782-F3BC-448C-9541-8BD3439BBA37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09D5D782-F3BC-448C-9541-8BD3439BBA37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{928902C8-F953-4A57-9237-A4042004BF31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{928902C8-F953-4A57-9237-A4042004BF31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{928902C8-F953-4A57-9237-A4042004BF31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{928902C8-F953-4A57-9237-A4042004BF31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{77380DAB-CA9A-487C-8FA5-CD2C0A6315BE} = {C75D4ECF-5A2B-4F25-945F-84659B0567DC}
 		{9634945A-AC9F-4548-B815-FF7F5AEA5C87} = {170D3ABD-1640-41D6-9E63-08CB9354A6E6}
 		{09D5D782-F3BC-448C-9541-8BD3439BBA37} = {9634945A-AC9F-4548-B815-FF7F5AEA5C87}
+		{928902C8-F953-4A57-9237-A4042004BF31} = {9634945A-AC9F-4548-B815-FF7F5AEA5C87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB9814F9-09E8-4692-82B8-5A7CF0F501BA}

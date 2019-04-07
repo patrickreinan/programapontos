@@ -21,21 +21,29 @@ namespace ProgramaPontos.Domain.Core.Events
             this.eventStore = eventStore;
             this.snapshotStore = snapshotStore;
         }
-           
-        public T LoadAggregate<T>(Guid aggregateId) where T: IAggregateRoot
+
+        public T LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot
         {
             T result = default(T);
             if (IsSnapshotAggregate<T>())
             {
                 result = TryLoadFromSnapshotNullIfException<T>(aggregateId);
 
-                    return result != null 
-                    ? result 
-                    : LoadFromHistory<T>(aggregateId);
+                return result != null
+                ? result
+                : LoadFromHistory<T>(aggregateId);
             }
             else
                 return LoadFromHistory<T>(aggregateId);
         }
+
+        public IAggregateRoot LoadAggregate(Guid aggregateId, Type type)
+        {
+            var method = this.GetType().GetMethod(nameof(LoadAggregate), new Type[] { typeof(Guid) });
+            var generic = method.MakeGenericMethod(type);
+            return (IAggregateRoot)generic.Invoke(this, new object[] { aggregateId });
+        }
+
 
         private T TryLoadFromSnapshotNullIfException<T>(Guid aggregateId) where T : IAggregateRoot
         {
@@ -89,20 +97,20 @@ namespace ProgramaPontos.Domain.Core.Events
                .Invoke(new object[] { snapshot, history });
         }
 
-        public void SaveAggregate( IAggregateRoot aggregate)
+        public void SaveAggregate(IAggregateRoot aggregate)
         {
             var expectedVersion = aggregate.Version;
 
             //get aggregate version by id
             var version = eventStore.GetVersionByAggregate(aggregate.Id);
-            
+
             //check consistency...
-            if(version.HasValue && version != expectedVersion )
+            if (version.HasValue && version != expectedVersion)
             {
                 throw new ConsistencyException(aggregate.Id);
             }
 
-            var newVersion = expectedVersion.HasValue ?  expectedVersion : 0;
+            var newVersion = expectedVersion.HasValue ? expectedVersion : 0;
             foreach (var @event in aggregate.GetUncommittedChanges())
             {
                 newVersion++;
@@ -114,6 +122,6 @@ namespace ProgramaPontos.Domain.Core.Events
             aggregate.MarkChangesAsCommitted();
         }
 
-     
+
     }
 }

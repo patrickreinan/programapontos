@@ -2,7 +2,8 @@
 using ProgramaPontos.Domain.Core.Aggregates;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Snapshot;
-using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Extrato;
+using ProgramaPontos.Domain.Events.Participante;
 using ProgramaPontos.Domain.Snapshots;
 using System;
 using System.Collections.Generic;

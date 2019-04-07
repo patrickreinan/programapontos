@@ -2,7 +2,7 @@
 using ProgramaPontos.Application.CommandStack.Core;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Snapshot;
-using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Extrato;
 using ProgramaPontos.Domain.Snapshots;
 using ProgramaPontos.ReadModel.Core;
 using ProgramaPontos.ReadModel.ElasticSearch;
@@ -37,7 +37,7 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
 
         public void Handle(ExtratoPontosAdicionadosDomainEvent @event)
         {
-            XXX(@event.AggregateId, @event.Version);
+            
             extratoReadModelService.AdicionarPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
             commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId)).Wait();
         }
@@ -56,15 +56,7 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
         }
 
 
-        private void XXX(Guid aggregateId, int version)
-        {
-            if (version % 5 == 0)
-            {
-                var extrato = eventStoreService.LoadAggregate<Domain.Aggregates.ExtratoAggregate.Extrato>(aggregateId);
-                var snapshot = new ExtratoSnapshot(extrato);
-                snapshotStore.SaveSnapshot(snapshot);
-            }
-        }
+       
 
 
     }

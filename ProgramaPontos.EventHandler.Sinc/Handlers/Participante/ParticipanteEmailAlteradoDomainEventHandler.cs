@@ -1,4 +1,5 @@
 ﻿using ProgramaPontos.Domain.Events;
+using ProgramaPontos.Domain.Events.Participante;
 using ProgramaPontos.ReadModel.Core;
 using System;
 using System.Collections.Generic;

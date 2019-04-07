@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProgramaPontos.Domain.Events
+namespace ProgramaPontos.Domain.Events.Extrato
 {
     public class ExtratoSaldoAtualizadoDomainEvent : DomainEvent
     {
