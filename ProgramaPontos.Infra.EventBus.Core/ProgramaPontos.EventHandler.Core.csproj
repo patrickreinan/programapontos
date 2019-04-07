@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProgramaPontos.Application.IntegrationEvents\ProgramaPontos.Application.IntegrationEvents.csproj" />
     <ProjectReference Include="..\ProgramaPontos.Domain.Core\ProgramaPontos.Domain.Core.csproj" />
   </ItemGroup>
 

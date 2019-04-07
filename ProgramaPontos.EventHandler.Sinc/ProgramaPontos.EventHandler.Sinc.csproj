@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProgramaPontos.Application.CommandStack.CommandHandler\ProgramaPontos.Application.CommandStack.csproj" />
+    <ProjectReference Include="..\ProgramaPontos.Application.IntegrationEvents\ProgramaPontos.Application.IntegrationEvents.csproj" />
     <ProjectReference Include="..\ProgramaPontos.Domain.Core\ProgramaPontos.Domain.Core.csproj" />
     <ProjectReference Include="..\ProgramaPontos.Domain\ProgramaPontos.Domain.csproj" />
     <ProjectReference Include="..\ProgramaPontos.Infra.Bus.EventBusRabbitMQ\ProgramaPontos.Infra.Bus.EventBusRabbitMQ.csproj" />

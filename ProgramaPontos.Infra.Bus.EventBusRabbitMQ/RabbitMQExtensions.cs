@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProgramaPontos.Application.IntegrationEvents;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Infra.Bus.EventBusRabbitMQ.Core;
 using System;
@@ -15,11 +16,24 @@ namespace ProgramaPontos.Infra.Bus.EventBusRabbitMQ
 
             return serviceCollection.AddSingleton<IEventBus, RabbitMQEventBus>((context) =>
             {
-                var settings = configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
+                var settings = configuration.GetSection(nameof(RabbitMQEventBusSettings)).Get<RabbitMQEventBusSettings>();
                 return new RabbitMQEventBus(settings);
             });
 
 
         }
+
+        public static IServiceCollection AddIntegrationBusRabbitMQ(this IServiceCollection serviceCollection, IConfiguration configuration)
+        {
+
+            return serviceCollection.AddSingleton<IIntegrationBus, RabbitMQIntegrationBus>((context) =>
+            {
+                var settings = configuration.GetSection(nameof(RabbitMQIntegrationBusSettings)).Get<RabbitMQIntegrationBusSettings>();
+                return new RabbitMQIntegrationBus(settings);
+            });
+
+
+        }
+
     }
 }

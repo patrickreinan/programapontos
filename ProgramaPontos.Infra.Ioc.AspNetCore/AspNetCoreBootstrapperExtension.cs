@@ -54,7 +54,9 @@ namespace ProgramaPontos.Infra.Ioc.AspNetCore
             #endregion
 
             #region Bus
-            services.AddEventBusRabbitMQ(configuration);
+            services.AddEventBusRabbitMQ(configuration)
+                .AddIntegrationBusRabbitMQ(configuration);
+            
             #endregion
 
             #region ReadModel

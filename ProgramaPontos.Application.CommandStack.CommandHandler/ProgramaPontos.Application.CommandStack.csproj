@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProgramaPontos.Application.IntegrationEvents\ProgramaPontos.Application.IntegrationEvents.csproj" />
     <ProjectReference Include="..\ProgramaPontos.Domain\ProgramaPontos.Domain.csproj" />
   </ItemGroup>
 

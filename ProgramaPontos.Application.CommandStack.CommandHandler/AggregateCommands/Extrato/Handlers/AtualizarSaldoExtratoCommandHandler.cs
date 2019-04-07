@@ -11,16 +11,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ProgramaPontos.Application.IntegrationEvents;
 
 namespace ProgramaPontos.Application.CommandStack.AggregateCommands.Extrato.Handlers
 {
     public class AtualizarSaldoExtratoCommandHandler : IRequestHandler<AtualizarSaldoExtratoCommand, ICommandResponse>
     {
         private readonly IExtratoService extratoService;
-        private readonly IEventBus eventBus;
+        private readonly IIntegrationBus eventBus;
         private readonly IEventStoreService eventStoreService;
 
-        public AtualizarSaldoExtratoCommandHandler(   IExtratoService extratoService, IEventBus eventBus)
+        public AtualizarSaldoExtratoCommandHandler(   IExtratoService extratoService, IIntegrationBus eventBus)
         {
             this.extratoService = extratoService;
             this.eventBus = eventBus;            
@@ -32,14 +33,9 @@ namespace ProgramaPontos.Application.CommandStack.AggregateCommands.Extrato.Hand
             return CommandHandlerHelper.ExecuteToResponse(() => {
 
                 var extrato = extratoService.RetornarExtrato(command.ExtratoId);
-                var evento = new ExtratoSaldoAtualizadoDomainEvent(command.ExtratoId, extrato.Saldo);
-                evento.Version = extrato.Version.Value;
+                var evento = new ExtratoSaldoAtualizadoIntegrationEvent(command.ExtratoId, extrato.Saldo);
                 eventBus.PublishEvent(evento);
-              
-
             });
-
-           
 
         }
     }
