@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 using ProgramaPontos.Domain.Core.Events;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,11 @@ namespace ProgramaPontos.Infra.EventStore.MongoDB
 
         public MongoDBEventStore(MongoDBEventStoreSettings settings)
         {
+
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
             collection = database.GetCollection<EventStoreItem>(nameof(EventStoreItem));
+
         }
 
         public IEnumerable<IDomainEvent> GetEventsFromAggregate(Guid aggregateId)

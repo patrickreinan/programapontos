@@ -12,12 +12,8 @@ namespace ProgramaPontos.Application
             Dados = dados;
         }
 
-        public Resultado(Exception ex) : base(ex)
-        {
+        public Resultado(Exception ex) : base(ex)        {        }
 
-
-
-        }
         public T Dados { get; }
     }
 
@@ -42,9 +38,9 @@ namespace ProgramaPontos.Application
             Exception = exception;
         }
 
-        public bool Sucesso { get; }
-        public string Mensagem { get; }
-        public Exception Exception { get; }
+        public bool Sucesso { get; protected set; }
+        public string Mensagem { get; protected set; }
+        public Exception Exception { get; protected set; }
 
 
 
