@@ -14,5 +14,8 @@ O arquivo <a href="https://github.com/patrickreinan/programapontos/blob/master/d
 
 
 <li>
+01-06-2019 <b>gRPC adicionado</b>
+</li>
+<li>
 07-04-2019 <b>Snapshot adicionado</b>
 </li>
