@@ -3,6 +3,7 @@ using Grpc.Core;
 using Programapontos.Grpc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace ProgramaPontos.gRPC.ConsoleClient.Tests
@@ -30,12 +31,16 @@ namespace ProgramaPontos.gRPC.ConsoleClient.Tests
 
             System.Threading.Thread.Sleep(10000);
 
+            var stopWatch = new Stopwatch();
+
+            stopWatch.Start();
             var requestedFromDatabase = client.RetornarParticipantePorEmail(new RetornarParticipantePorEmailRequest() { Email = request.Email });
             if (requestedFromDatabase.Dados.Id != request.Id) throw new InvalidOperationException();
 
             channel.ShutdownAsync().Wait();
+            stopWatch.Stop();
 
-            Console.WriteLine($"OK -> {requestedFromDatabase.Dados.Nome} - {requestedFromDatabase.Dados.Email} - {requestedFromDatabase.Dados.Id} ");
+            Console.WriteLine($"OK -> {requestedFromDatabase.Dados.Nome} - {requestedFromDatabase.Dados.Email} - {requestedFromDatabase.Dados.Id} - {stopWatch.Elapsed.TotalMilliseconds}ms ");
         }
 
         private CriarParticipanteRequest CriarParticipanteRequestFake()
