@@ -25,7 +25,7 @@ namespace ProgramaPontos.ReadModel.ElasticSearch.Extensions
         {
             var name = typeof(T).Name.ToLower();
 
-            connectionSettings.DefaultMappingFor<T>(m => m.TypeName(name).IndexName(name));
+            connectionSettings.DefaultMappingFor<T>(m => m.IndexName(name).IndexName(name));
         }
         
     }

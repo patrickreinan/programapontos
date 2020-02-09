@@ -11,3 +11,11 @@ Nesta aplicação está sendo utilizado:
 </ul>
 
 O arquivo <a href="https://github.com/patrickreinan/programapontos/blob/master/docker/run_containers.bat">docker\run_containers.bat</a> cria todos os containers necessário para executar a aplicação.
+
+
+<li>
+01-06-2019 <b>gRPC adicionado</b>
+</li>
+<li>
+07-04-2019 <b>Snapshot adicionado</b>
+</li>

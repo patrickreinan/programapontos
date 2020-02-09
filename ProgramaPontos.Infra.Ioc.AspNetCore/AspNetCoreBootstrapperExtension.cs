@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProgramaPontos.Application.CommandStack;
 using ProgramaPontos.Application.CommandStack.Bus;
 using ProgramaPontos.Application.CommandStack.Core;
 using ProgramaPontos.Application.Services;
@@ -17,6 +18,7 @@ using ProgramaPontos.ReadModel.ElasticSearch;
 using ProgramaPontos.ReadModel.ElasticSearch.Extensions;
 using ProgramaPontos.ReadModel.Extrato;
 using ProgramaPontos.Snapshot.SnapshotStore.MongoDB;
+using System.Reflection;
 
 namespace ProgramaPontos.Infra.Ioc.AspNetCore
 {
@@ -67,7 +69,7 @@ namespace ProgramaPontos.Infra.Ioc.AspNetCore
             #endregion
 
             #region MediatR
-            services.AddMediatR();
+            services.AddMediatR(typeof(MediatRMarkedClass).GetTypeInfo().Assembly);
             #endregion
 
             #region Repository
