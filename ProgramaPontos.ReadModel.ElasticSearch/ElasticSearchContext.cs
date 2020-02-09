@@ -34,8 +34,10 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
 
         private void CreateIndexIfNotExists<T>() where T : IReadModel
         {
-            if (!Client.IndexExists(new IndexExistsRequest(GetIndexName<T>().Name)).Exists)
-                Client.CreateIndex(GetIndexName<T>().Name);
+            var indexName = GetIndexName<T>().Name;
+            
+            if (!Client.Indices.Exists(Indices.Parse(indexName)).Exists)
+                Client.Indices.Create(indexName);
 
 
         }
