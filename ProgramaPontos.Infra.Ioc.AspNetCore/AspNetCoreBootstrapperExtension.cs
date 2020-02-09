@@ -67,7 +67,7 @@ namespace ProgramaPontos.Infra.Ioc.AspNetCore
             #endregion
 
             #region MediatR
-            services.AddMediatR();
+            services.AddMediatR(services.GetType().Assembly);
             #endregion
 
             #region Repository
