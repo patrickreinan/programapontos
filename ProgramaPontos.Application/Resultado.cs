@@ -7,7 +7,11 @@ namespace ProgramaPontos.Application
 
     public class Resultado<T> : Resultado
     {
-        public Resultado(bool sucesso, string mensagem):base(sucesso,mensagem)
+        public Resultado(bool sucesso, string mensagem) : base(sucesso, new[] { mensagem })
+        {
+
+        }
+        public Resultado(bool sucesso, string[] mensagens):base(sucesso,mensagens)
         {
             Dados = default;
         }
@@ -27,18 +31,27 @@ namespace ProgramaPontos.Application
         public Resultado() : this(true, string.Empty) { }
                 
         public Resultado(ICommandResponse commandResponse) :
-            this(commandResponse.IsValid, commandResponse.Exception?.Message)
-        { }
-
+            this(commandResponse.IsValid, commandResponse.Reasons)
+        { 
         
+        }
+
+        public Resultado(bool sucesso, string[] mensagens)
+        {
+            this.Sucesso = sucesso;
+            this.Mensagens = mensagens;
+        }
+
+
+
         public Resultado(bool sucesso, string mensagem)
         {
             Sucesso = sucesso;
-            Mensagem = mensagem;
+            Mensagens =new string[] { mensagem };
         }
 
         public bool Sucesso { get; protected set; }
-        public string Mensagem { get; protected set; }
+        public string[] Mensagens { get; protected set; }
 
 
 

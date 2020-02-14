@@ -52,7 +52,7 @@ namespace ProgramaPontos.Infra.EventStore.MongoDB
                .Find(f => f.AggregateId == aggregateId.ToString())
                .SortBy(s => s.DateTime)
                .Limit(1)
-              .FirstAsync();
+              .FirstOrDefaultAsync();
               
 
             return e == null ? default(int?) : e.Version;

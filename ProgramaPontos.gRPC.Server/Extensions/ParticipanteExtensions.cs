@@ -26,7 +26,7 @@ namespace ProgramaPontos.gRPC.Server.Extensions
         {
             return new CriarParticipanteReply()
             {
-                Mensagem = resultado.Mensagem == null ? string.Empty : resultado.Mensagem,
+                Mensagem = resultado.Mensagens == null ? string.Empty : String.Join("|", resultado.Mensagens),
                 Sucesso = resultado.Sucesso
             };
         }
@@ -45,7 +45,7 @@ namespace ProgramaPontos.gRPC.Server.Extensions
             {
                 Dados = dados,
                 Sucesso = resultado.Sucesso,
-                Mensagem = resultado.Mensagem
+                Mensagem = String.Join("|", resultado.Mensagens)
             };
 
         }

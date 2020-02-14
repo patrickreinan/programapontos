@@ -1,5 +1,6 @@
 ﻿using ProgramaPontos.Domain.Aggregates.ParticipanteAggregate;
 using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.Domain.Core.Result;
 using System;
 using System.Threading.Tasks;
 
@@ -17,12 +18,17 @@ namespace ProgramaPontos.Domain.Services
         }
 
 
-        public async Task AdicionarParticipante(Guid id, string nome, string email)
+        public async Task<DomainResult> AdicionarParticipante(Guid id, string nome, string email)
         {
 
             var participante = new Participante(id, nome, email);
+
+            if (!participante.IsValid())
+                return participante.Notifications().ToDomainResult();
+
             await eventStoreService.SaveAggregate(participante);
 
+            return new DomainResult();
         }
 
         public async Task AlterarEmail(Guid id, string email)

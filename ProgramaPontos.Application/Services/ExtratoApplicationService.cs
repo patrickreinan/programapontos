@@ -81,7 +81,7 @@ namespace ProgramaPontos.Application.Services
 
             return resultado.Sucesso ?
                 new Resultado<ExtratoParticipanteReadModel>(await extratoReadModelService.RetornarExtrato(resultado.Dados)) :
-                new Resultado<ExtratoParticipanteReadModel>(false, resultado.Mensagem);
+                new Resultado<ExtratoParticipanteReadModel>(false, resultado.Mensagens);
 
 
         }

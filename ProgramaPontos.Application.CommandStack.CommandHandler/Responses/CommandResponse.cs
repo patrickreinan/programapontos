@@ -9,13 +9,14 @@ namespace ProgramaPontos.Application.CommandStack.Responses
     {
         
 
-        public CommandResponse(bool isValid, Exception exception)
+        public CommandResponse(bool isValid, string[] reasons)
         {
             IsValid = isValid;
-            Exception = exception;
+            Reasons = reasons;
         }
 
         public bool IsValid { get; }
-        public Exception Exception { get; }
+        
+        public string[] Reasons { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ProgramaPontos.Domain.Aggregates.ExtratoAggregate;
 using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Exceptions;
+using ProgramaPontos.Domain.Core.Result;
 using ProgramaPontos.Domain.Repository;
 using System;
 using System.Threading.Tasks;
@@ -26,16 +27,17 @@ namespace ProgramaPontos.Domain.Services
             return await eventStoreService.LoadAggregate<Extrato>(id);
         }
 
-        public async Task CriarExtrato(Guid extratoId, Guid participanteId)
+        public async Task<DomainResult> CriarExtrato(Guid extratoId, Guid participanteId)
         {
 
             if (await extratoRepository.ExisteExtratoParticipante(participanteId))
-                throw new DomainException("O participante já possui extrato.");
+                return new DomainResult("O participante já possui extrato.");
 
             var extrato = new Extrato(extratoId, participanteId);
 
 
             await eventStoreService.SaveAggregate(extrato);
+            return new DomainResult();
         }
 
         
@@ -47,15 +49,16 @@ namespace ProgramaPontos.Domain.Services
             await eventStoreService.SaveAggregate(extrato);
         }
 
-        public async Task RemoverPontos(Guid extratoId, int pontos)
+        public async Task<DomainResult> RemoverPontos(Guid extratoId, int pontos)
         {
             var extrato = await eventStoreService.LoadAggregate<Extrato>(extratoId);
 
             if (extrato.Saldo < pontos)
-                throw new DomainException("Quantidade de pontos maior do que o saldo");
+                return new DomainResult("Quantidade de pontos maior do que o saldo");
 
             extrato.RemoverPontos(pontos);
             await eventStoreService.SaveAggregate(extrato);
+            return new DomainResult();
 
         }
 

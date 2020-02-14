@@ -6,7 +6,7 @@ namespace ProgramaPontos.Application.CommandStack.Responses
 {
     public class ErrorCommandResponse : CommandResponse
     {
-        public ErrorCommandResponse(Exception exception) : base(false, exception)
+        public ErrorCommandResponse(string[] reasons) : base(false, reasons)
         {
         }
 
