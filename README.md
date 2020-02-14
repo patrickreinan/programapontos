@@ -13,6 +13,7 @@ Nesta aplicação está sendo utilizado:
 O arquivo <a href="https://github.com/patrickreinan/programapontos/blob/master/docker/run_containers.bat">docker\run_containers.bat</a> cria todos os containers necessário para executar a aplicação.
 
 <ul>
+<li>14-02-2020 <b>Ajustes de performance</b></li>  
 <li>09-02-2020 <b>Upgrade para .NET Core 3.1</b></li>
 <li>01-06-2019 <b>gRPC adicionado</b></li>
 <li>07-04-2019 <b>Snapshot adicionado</b></li>
