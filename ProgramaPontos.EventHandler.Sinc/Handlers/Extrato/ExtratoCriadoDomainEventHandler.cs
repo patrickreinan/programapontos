@@ -5,6 +5,7 @@ using ProgramaPontos.ReadModel.Extrato;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
 {
@@ -17,16 +18,16 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
             this.extratoReadModelService = extratoReadModelService;
         }
 
-        public void Handle(ExtratoCriadoDomainEvent @event)
+        public async Task Handle(ExtratoCriadoDomainEvent @event)
         {
-            extratoReadModelService.InserirExtratoReadModel(new ExtratoParticipanteReadModel()
+            await extratoReadModelService.InserirExtratoReadModel(new ExtratoParticipanteReadModel()
             {
                 ExratoId = @event.AggregateId,
                 ParticipanteId = @event.ParticipanteId,
                 Id = Guid.NewGuid()
             });
 
-            extratoReadModelService.InserirExtratoParticipanteSaldoReadModel(new ExtratoParticipanteSaldoReadModel()
+            await extratoReadModelService.InserirExtratoParticipanteSaldoReadModel(new ExtratoParticipanteSaldoReadModel()
             {
                 ExtratoId = @event.AggregateId,
                 ParticipanteId = @event.ParticipanteId,

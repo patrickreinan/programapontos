@@ -13,7 +13,7 @@ namespace ProgramaPontos.API.Extensions
         {
             return (resultado.Sucesso) ?
                 new OkObjectResult(resultado) :
-                new ObjectResult(resultado) { StatusCode = 500 };
+                new ObjectResult(resultado) { StatusCode = 400 };
                 
         }
 
@@ -21,7 +21,7 @@ namespace ProgramaPontos.API.Extensions
         {
             return (resultado.Sucesso) ?
                 new OkObjectResult(resultado) :
-                new ObjectResult(resultado) { StatusCode = 500 };
+                new ObjectResult(resultado) { StatusCode = 400 };
 
         }
     }

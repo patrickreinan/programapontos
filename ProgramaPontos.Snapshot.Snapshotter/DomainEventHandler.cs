@@ -4,6 +4,7 @@ using ProgramaPontos.Domain.Core.Events;
 using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.EventHandler.Sinc;
 using System;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Snapshot.Snapshotter
 {
@@ -20,14 +21,14 @@ namespace ProgramaPontos.Snapshot.Snapshotter
             this.settings = settings;
         }
 
-        public void Handle(T @event)
+        public async Task Handle(T @event)
         {
 
             if (@event.Version % settings.WhenVersionNumberIsDividedBy!=0)
                 return;
 
         
-            var aggregate = eventStoreService.LoadAggregate(@event.AggregateId, GetAggregateTypeFromEvent(@event));
+            var aggregate = await eventStoreService.LoadAggregate(@event.AggregateId, GetAggregateTypeFromEvent(@event));
             var snapshot = BuildSnapshotFromAggregate(aggregate);
             snapshotStore.SaveSnapshot(snapshot);
             Console.WriteLine($"{@event.AggregateId} Version: {@event.Version} snapshotted");

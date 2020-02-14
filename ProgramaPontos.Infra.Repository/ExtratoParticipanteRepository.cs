@@ -3,6 +3,7 @@ using ProgramaPontos.ReadModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Infra.Repository
 {
@@ -15,9 +16,10 @@ namespace ProgramaPontos.Infra.Repository
             this.extratoParticipanteReadModelService = extratoParticipanteReadModelService;
         }
 
-        public bool ExisteExtratoParticipante(Guid participanteId)
+        public async Task<bool> ExisteExtratoParticipante(Guid participanteId)
         {
-            return extratoParticipanteReadModelService.RetornarIdExtrato(participanteId).HasValue;
+            var resultado= await extratoParticipanteReadModelService.RetornarIdExtrato(participanteId);
+            return resultado.HasValue;
         }
     }
 }

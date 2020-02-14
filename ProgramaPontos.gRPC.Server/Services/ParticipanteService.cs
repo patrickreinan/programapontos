@@ -19,24 +19,21 @@ namespace ProgramaPontos.gRPC.Server.Services
             this.participanteApplicationService = participanteApplicationService;
         }
 
-        public override Task<CriarParticipanteReply> CriarParticipante(CriarParticipanteRequest request, ServerCallContext context)
+        public async override Task<CriarParticipanteReply> CriarParticipante(CriarParticipanteRequest request, ServerCallContext context)
         {
 
-            return Task.Run(() =>
-                {
-                    var result = participanteApplicationService.CriarParticipante(request.ToParticipanteDTO()).Result;
-                    return result.ToCriarParticipanteReply();
+            var result = await participanteApplicationService.CriarParticipante(request.ToParticipanteDTO());
+            return result.ToCriarParticipanteReply();
 
-                });
+           
         }
 
-        public override Task<RetornarParticipantePorEmailReply> RetornarParticipantePorEmail(RetornarParticipantePorEmailRequest request, ServerCallContext context)
+        public async override Task<RetornarParticipantePorEmailReply> RetornarParticipantePorEmail(RetornarParticipantePorEmailRequest request, ServerCallContext context)
         {
-            return Task.Run(() =>
-            {
-                var result = participanteApplicationService.RetornarParticipantePorEmail(request.Email).Result;
-                return result.ToRetornarParticipantePorEmailReply();
-            });
+
+            var result = await participanteApplicationService.RetornarParticipantePorEmail(request.Email);
+            return result.ToRetornarParticipantePorEmailReply();
+
         }
     }
 }

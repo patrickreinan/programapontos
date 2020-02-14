@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Domain.Core.Events
 {
     public interface IEventStore
     {
-        void Save(IDomainEvent @event);
+        Task Save(IDomainEvent @event);
 
-        int? GetVersionByAggregate(Guid aggregateId);
+        Task<int?> GetVersionByAggregate(Guid aggregateId);
 
-        IEnumerable<IDomainEvent> GetEventsFromAggregate(Guid aggregateId);
-        IEnumerable<IDomainEvent> GetEventsFromAggregateAfterVersion(Guid aggregateId, int version);
+        Task<IEnumerable<IDomainEvent>> GetEventsFromAggregate(Guid aggregateId);
+        
+        Task<IEnumerable<IDomainEvent>> GetEventsFromAggregateAfterVersion(Guid aggregateId, int version);
     }
 }

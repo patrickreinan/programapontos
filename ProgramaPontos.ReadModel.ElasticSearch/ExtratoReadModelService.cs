@@ -4,6 +4,7 @@ using ProgramaPontos.ReadModel.ElasticSearch.Extensions;
 using ProgramaPontos.ReadModel.Extrato;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.ReadModel.ElasticSearch
 {
@@ -19,27 +20,27 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
 
 
 
-        public void InserirExtratoReadModel(ExtratoParticipanteReadModel extratoParticipanteReadModel)
+        public async Task InserirExtratoReadModel(ExtratoParticipanteReadModel extratoParticipanteReadModel)
         {
 
 
-            context.Client.IndexDocument(extratoParticipanteReadModel)
-                .ThrowIfNotValid();
+            var response = await context.Client.IndexDocumentAsync(extratoParticipanteReadModel);
+                response.ThrowIfNotValid();
 
         }
 
-        public void AdicionarPontosExtrato(Guid extratoId, DateTime data, int pontos)
+        public async Task AdicionarPontosExtrato(Guid extratoId, DateTime data, int pontos)
         {
-            AdicionarMovimentacao(extratoId, data, pontos, "Pontos adicionados");
+            await AdicionarMovimentacao(extratoId, data, pontos, "Pontos adicionados");
         }
-        public void QuebraPontosExtrato(Guid extratoId, DateTime data, int pontos)
+        public async Task QuebraPontosExtrato(Guid extratoId, DateTime data, int pontos)
         {
-            AdicionarMovimentacao(extratoId, data, pontos, "Quebra de pontos");
+            await AdicionarMovimentacao(extratoId, data, pontos, "Quebra de pontos");
         }
 
-        private void AdicionarMovimentacao(Guid extratoId, DateTime data, int pontos, string tipo)
+        private async Task AdicionarMovimentacao(Guid extratoId, DateTime data, int pontos, string tipo)
         {
-            var extrato = RetornarExtrato(extratoId);
+            var extrato =await RetornarExtrato(extratoId);
             extrato.Movimentacoes.Add(new MovimentacaoExtratoReadModel()
             {
                 Data = data,
@@ -47,51 +48,43 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
                 Tipo = tipo
             });
 
-            AtualizarMovimentacaoExtrato(extrato);
+           await AtualizarMovimentacaoExtrato(extrato);
         }
 
 
-        public void AtualizarSaldoExtratoParticipante(Guid extratoId, int saldo)
+        public async Task AtualizarSaldoExtratoParticipante(Guid extratoId, int saldo)
         {
-            var saldoParticipante = RetornarSaldoExtratoParticipante(extratoId);
+            var saldoParticipante = await RetornarSaldoExtratoParticipante(extratoId);
 
             saldoParticipante.Saldo = saldo;
 
-            var update = new UpdateRequest<ExtratoParticipanteSaldoReadModel, object>(saldoParticipante);
-            update.Doc = new { saldoParticipante.Saldo };
+            var update = new UpdateRequest<ExtratoParticipanteSaldoReadModel, object>(saldoParticipante)
+            {
+                Doc = new { saldoParticipante.Saldo }
+            };
 
-            var response = context.Client.Update(update);
+            var response = await context.Client.UpdateAsync(update);
             response.ThrowIfNotValid();
 
 
         }
-        private void AtualizarMovimentacaoExtrato(ExtratoParticipanteReadModel extrato)
+        private async Task AtualizarMovimentacaoExtrato(ExtratoParticipanteReadModel extrato)
         {
 
-            var update = new UpdateRequest<ExtratoParticipanteReadModel, object>(extrato);
-            update.Doc = extrato;
+            var update = new UpdateRequest<ExtratoParticipanteReadModel, object>(extrato)
+            {
+                Doc = extrato
+            };
 
-            var response = context.Client.Update(update);
+            var response = await context.Client.UpdateAsync(update);
             response.ThrowIfNotValid();
         }
     
 
-        private void InserirSaldoParticipante(Guid extratoId, Guid participanteId, int saldo)
+       
+        private async Task<ExtratoParticipanteSaldoReadModel> RetornarSaldoExtratoParticipante(Guid participanteId)
         {
-            var indexResponse = context.Client.IndexDocument(new ExtratoParticipanteSaldoReadModel()
-            {
-                Id = Guid.NewGuid(),
-                ParticipanteId = participanteId,
-                ExtratoId = extratoId,
-                Saldo = saldo
-            });
-
-            indexResponse.ThrowIfNotValid();
-        }
-
-        private ExtratoParticipanteSaldoReadModel RetornarSaldoExtratoParticipante(Guid participanteId)
-        {
-            var searchResponse = context.Client.Search<ExtratoParticipanteSaldoReadModel>(s => s
+            var searchResponse = await context.Client.SearchAsync<ExtratoParticipanteSaldoReadModel>(s => s
                           .Query(q => q
                               .Match(m => m
                                   .Field(f => f.ExtratoId)
@@ -108,14 +101,14 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
 
         
 
-        public void RemoverPontosExtrato(Guid aggregateId, DateTime data, int pontos)
+        public async Task RemoverPontosExtrato(Guid aggregateId, DateTime data, int pontos)
         {
-            AdicionarMovimentacao(aggregateId, data, pontos, "Pontos removidos");
+            await AdicionarMovimentacao(aggregateId, data, pontos, "Pontos removidos");
         }
 
-        public ExtratoParticipanteReadModel RetornarExtrato(Guid extratoId)
+        public  async Task<ExtratoParticipanteReadModel> RetornarExtrato(Guid extratoId)
         {
-            var response = context.Client.Search<ExtratoParticipanteReadModel>(
+            var response = await context.Client.SearchAsync<ExtratoParticipanteReadModel>(
                           s => s
                               .Query(q => q
                                   .Match(m => m
@@ -137,12 +130,12 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
 
         }
 
-        public Guid? RetornarIdExtrato(Guid participanteId)
+        public async Task<Guid?> RetornarIdExtrato(Guid participanteId)
         {
 
 
 
-            var response = context.Client.Search<ExtratoParticipanteReadModel>(
+            var response = await context.Client.SearchAsync<ExtratoParticipanteReadModel>(
                             s => s
                                 .Query(q => q
                                     .Match(m => m
@@ -167,16 +160,16 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
 
         
 
-        public void InserirExtratoParticipanteSaldoReadModel(ExtratoParticipanteSaldoReadModel extratoParticipanteSaldoReadModel)
+        public async Task InserirExtratoParticipanteSaldoReadModel(ExtratoParticipanteSaldoReadModel extratoParticipanteSaldoReadModel)
         {
-            var response = context.Client.IndexDocument(extratoParticipanteSaldoReadModel);
+            var response = await context.Client.IndexDocumentAsync(extratoParticipanteSaldoReadModel);
 
             response.ThrowIfNotValid();
         }
 
-        public int RetornarSaldoParticipante(Guid participanteId)
+        public async Task<int?> RetornarSaldoParticipante(Guid participanteId)
         {
-            var response = context.Client.Search<ExtratoParticipanteSaldoReadModel>(
+            var response = await context.Client.SearchAsync<ExtratoParticipanteSaldoReadModel>(
                 s => s
                     .Query(q => q
                         .Match(m => m
@@ -190,8 +183,8 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
             response.ThrowIfNotValid();
 
             if (response.Documents.Count == 0)
-                throw new Exception("Participante sem saldo criado");
-
+                return null ;
+            
             return response.Documents.First().Saldo;
         }
     }

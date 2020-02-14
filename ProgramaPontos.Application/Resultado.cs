@@ -7,40 +7,38 @@ namespace ProgramaPontos.Application
 
     public class Resultado<T> : Resultado
     {
+        public Resultado(bool sucesso, string mensagem):base(sucesso,mensagem)
+        {
+            Dados = default;
+        }
+
         public Resultado(T dados)
         {
             Dados = dados;
+            Sucesso = true;
         }
-
-        public Resultado(Exception ex) : base(ex)        {        }
 
         public T Dados { get; }
     }
 
     public class Resultado
     {
-        public Resultado(Exception ex) : this(false, ex.Message, ex) { }
 
-        public Resultado() : this(true, string.Empty, null) { }
-
-        public Resultado(bool sucesso, string mensagem) : this(sucesso, mensagem, null) { }
-
+        public Resultado() : this(true, string.Empty) { }
+                
         public Resultado(ICommandResponse commandResponse) :
-            this(commandResponse.IsValid, commandResponse.Exception?.Message, commandResponse.Exception)
+            this(commandResponse.IsValid, commandResponse.Exception?.Message)
         { }
 
-
-
-        public Resultado(bool sucesso, string mensagem, Exception exception)
+        
+        public Resultado(bool sucesso, string mensagem)
         {
             Sucesso = sucesso;
             Mensagem = mensagem;
-            Exception = exception;
         }
 
         public bool Sucesso { get; protected set; }
         public string Mensagem { get; protected set; }
-        public Exception Exception { get; protected set; }
 
 
 

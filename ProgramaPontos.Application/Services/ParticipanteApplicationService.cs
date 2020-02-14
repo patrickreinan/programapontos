@@ -22,25 +22,23 @@ namespace ProgramaPontos.Application.Services
             this.commandBus = commandBus;
             this.participanteReadModelService = participanteReadModelService;
         }
-        public Task<Resultado> CriarParticipante(ParticipanteDTO participante)
+        public async Task<Resultado> CriarParticipante(ParticipanteDTO participante)
         {
-            return commandBus.EnviarCommandoRetornaResultadoAsync(new CriarParticipanteCommand(participante.Id, participante.Nome, participante.Email));
+            return await commandBus.EnviarCommandoRetornaResultadoAsync(new CriarParticipanteCommand(participante.Id, participante.Nome, participante.Email));
         }
 
-        public Task<Resultado> AlterarNomeParticipante(Guid participanteId, string nome)
+        public async Task<Resultado> AlterarNomeParticipante(Guid participanteId, string nome)
         {
-            return commandBus.EnviarCommandoRetornaResultadoAsync(new AlterarNomeParticipanteCommand(participanteId, nome));
+            return await commandBus.EnviarCommandoRetornaResultadoAsync(new AlterarNomeParticipanteCommand(participanteId, nome));
         }
 
-        public Task<Resultado<ParticipanteDTO>> RetornarParticipantePorEmail(string email)
+        public async Task<Resultado<ParticipanteDTO>> RetornarParticipantePorEmail(string email)
         {
 
-            return Task.Run(() =>
-            {
-                var participante = participanteReadModelService.RetornarParticipanteReadModelPeloEmail(email);
+                var participante = await participanteReadModelService.RetornarParticipanteReadModelPeloEmail(email);
 
                 if (participante == null)
-                    return new Resultado<ParticipanteDTO>(default(ParticipanteDTO));
+                    return new Resultado<ParticipanteDTO>(default);
 
                 var resultado = new ParticipanteDTO()
                 {
@@ -52,7 +50,7 @@ namespace ProgramaPontos.Application.Services
                 return new Resultado<ParticipanteDTO>(resultado);
 
 
-            });
+            
 
         }
 

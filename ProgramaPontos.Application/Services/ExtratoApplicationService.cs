@@ -21,68 +21,90 @@ namespace ProgramaPontos.Application.Services
             this.extratoReadModelService = extratoReadModelService;
         }
 
-        public Task<Resultado> AdicionarPontosParticipante(Guid participanteId, int pontos)
+        public async Task<Resultado> AdicionarPontosParticipante(Guid participanteId, int pontos)
         {
 
-            var extratoId = RetornarExtratoComExcecaoSeNulo(participanteId);
-            return commandBus.EnviarCommandoRetornaResultadoAsync(new AdicionarPontosExtratoCommand(extratoId, pontos));
+            return await ExecutaAcaoSeExtratoExiste(participanteId,
+                   (extratoId) =>
+                   {
+                       return commandBus.EnviarCommandoRetornaResultadoAsync(new AdicionarPontosExtratoCommand(extratoId, pontos)).Result;
+                   });
+
+
         }
 
 
 
-        public Task<Resultado> RemoverPontosParticipante(Guid participanteId, int pontos)
+        public async Task<Resultado> RemoverPontosParticipante(Guid participanteId, int pontos)
         {
-            var extratoId = RetornarExtratoComExcecaoSeNulo(participanteId);
-            return commandBus.EnviarCommandoRetornaResultadoAsync(new RemoverPontosExtratoCommand(extratoId, pontos));
+            return await ExecutaAcaoSeExtratoExiste(participanteId,
+                   (extratoId) =>
+                   {
+                       return commandBus.EnviarCommandoRetornaResultadoAsync(new RemoverPontosExtratoCommand(extratoId, pontos)).Result;
+                   });
+
         }
 
-        public Task<Resultado> EfetuarQuebraPontosParticipante(Guid participanteId, int pontos)
+        public async Task<Resultado> EfetuarQuebraPontosParticipante(Guid participanteId, int pontos)
         {
-            var extratoId = RetornarExtratoComExcecaoSeNulo(participanteId);
-            return commandBus.EnviarCommandoRetornaResultadoAsync(new EfetuarQuebraPontosExtratoCommand(extratoId, pontos));
+            return await ExecutaAcaoSeExtratoExiste(participanteId,
+                    (extratoId) =>
+                    {
+                        return commandBus.EnviarCommandoRetornaResultadoAsync(new EfetuarQuebraPontosExtratoCommand(extratoId, pontos)).Result;
+                    });
+
+
         }
 
-        public Task<Resultado> CriarExtratoParticipante(Guid extratoId, Guid participanteId)
+        public async Task<Resultado> ExecutaAcaoSeExtratoExiste(Guid participanteId, Func<Guid, Resultado> action)
         {
-            return commandBus.EnviarCommandoRetornaResultadoAsync(new CriarExtratoCommand(extratoId, participanteId));
+            var extratoId = await RetornarExtrato(participanteId);
+            if (!extratoId.Sucesso)
+                return extratoId;
+
+            return action.Invoke(extratoId.Dados);
+
         }
 
 
-        public Task<Resultado<ExtratoParticipanteReadModel>> RetornarExtratoParticipante(Guid participanteId)
+
+        public async Task<Resultado> CriarExtratoParticipante(Guid extratoId, Guid participanteId)
         {
-            return Task.Run<Resultado<ExtratoParticipanteReadModel>>(() =>
-             {
-
-                 try
-                 {
-                     var extratoId = RetornarExtratoComExcecaoSeNulo(participanteId);
-                     return new Resultado<ExtratoParticipanteReadModel>(extratoReadModelService.RetornarExtrato(extratoId));
-
-                 }
-                 catch (Exception ex)
-                 {
-                     return new Resultado<ExtratoParticipanteReadModel>(ex);
-
-                 }
-
-             });
-
-        }
-        private Guid RetornarExtratoComExcecaoSeNulo(Guid participanteId)
-        {
-            var extratoId = extratoReadModelService.RetornarIdExtrato(participanteId);
-
-            if (!extratoId.HasValue)
-                throw new InvalidOperationException($"O extrato {extratoId} não existe.");
-            return extratoId.Value;
+            return await commandBus.EnviarCommandoRetornaResultadoAsync(new CriarExtratoCommand(extratoId, participanteId));
         }
 
-        public Task<Resultado<int>> RetornarSaldoParticipante(Guid participanteId)
+
+        public async Task<Resultado<ExtratoParticipanteReadModel>> RetornarExtratoParticipante(Guid participanteId)
         {
-            return Task.Run(()=> 
-            {
-                return new Resultado<int>( extratoReadModelService.RetornarSaldoParticipante(participanteId));
-            } );
+
+            var resultado = await RetornarExtrato(participanteId);
+
+            return resultado.Sucesso ?
+                new Resultado<ExtratoParticipanteReadModel>(await extratoReadModelService.RetornarExtrato(resultado.Dados)) :
+                new Resultado<ExtratoParticipanteReadModel>(false, resultado.Mensagem);
+
+
+        }
+        private async Task<Resultado<Guid>> RetornarExtrato(Guid participanteId)
+        {
+            var extratoId = await extratoReadModelService.RetornarIdExtrato(participanteId);
+            Resultado<Guid> resultado;
+
+            resultado = !extratoId.HasValue ?
+                        new Resultado<Guid>(false, $"O extrato {extratoId} não existe.") :
+                        new Resultado<Guid>(extratoId.Value);
+
+            return await Task.FromResult(resultado);
+        }
+
+        public async Task<Resultado<int>> RetornarSaldoParticipante(Guid participanteId)
+        {
+            var resultado = await extratoReadModelService.RetornarSaldoParticipante(participanteId);
+
+            return resultado.HasValue ?
+                new Resultado<int>(resultado.Value) :
+                new Resultado<int>(false, "$O participante não possui saldo");
+
         }
     }
 }

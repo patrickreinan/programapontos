@@ -5,6 +5,7 @@ using ProgramaPontos.ReadModel.Participante;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.EventHandler.Sinc.Handlers.Participante
 {
@@ -17,9 +18,9 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Participante
             this.participanteServiceReadModel = participanteServiceReadModel;
         }
 
-        public void Handle(ParticipanteCriadoDomainEvent @event)
+        public async Task Handle(ParticipanteCriadoDomainEvent @event)
         {
-            participanteServiceReadModel.InserirParticipanteReadModel(new ParticipanteReadModel()
+           await participanteServiceReadModel.InserirParticipanteReadModel(new ParticipanteReadModel()
             {
                 Email = @event.Email,
                 Nome = @event.Nome,

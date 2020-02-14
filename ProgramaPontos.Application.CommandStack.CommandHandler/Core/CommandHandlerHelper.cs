@@ -10,20 +10,18 @@ namespace ProgramaPontos.Application.CommandStack.Core
     {
 
 
-        public static Task<ICommandResponse> ExecuteToResponse(Action action)
+        public static async Task<ICommandResponse> ExecuteToResponse(Action action)
         {
-            return Task.Run<ICommandResponse>(() =>
-           {
                try
                {
                    action.Invoke();
-                   return new SuccessCommandResponse();
+                   return await Task.FromResult((ICommandResponse) new SuccessCommandResponse());
                }
                catch (Exception ex)
                {
-                   return new ErrorCommandResponse(ex);
+                   return await Task.FromResult((ICommandResponse) new ErrorCommandResponse(ex));
                }
-           });
+          ;
         }
 
 

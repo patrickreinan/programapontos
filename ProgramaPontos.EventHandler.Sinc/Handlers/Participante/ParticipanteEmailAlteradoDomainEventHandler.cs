@@ -4,6 +4,7 @@ using ProgramaPontos.ReadModel.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.EventHandler.Sinc.Handlers.Participante
 {
@@ -16,9 +17,9 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Participante
             this.participanteReadModelService = participanteReadModelService;
         }
 
-        public void Handle(ParticipanteEmailAlteradoDomainEvent @event)
+        public async Task Handle(ParticipanteEmailAlteradoDomainEvent @event)
         {
-            participanteReadModelService.AlterarEmailParticipante(@event.AggregateId, @event.Email);
+            await participanteReadModelService.AlterarEmailParticipante(@event.AggregateId, @event.Email);
 
         }
     }

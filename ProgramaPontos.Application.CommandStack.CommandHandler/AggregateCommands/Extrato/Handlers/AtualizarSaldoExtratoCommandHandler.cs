@@ -27,12 +27,12 @@ namespace ProgramaPontos.Application.CommandStack.AggregateCommands.Extrato.Hand
             this.eventBus = eventBus;            
         }
 
-        public Task<ICommandResponse> Handle(AtualizarSaldoExtratoCommand command, CancellationToken cancellationToken)
+        public async Task<ICommandResponse> Handle(AtualizarSaldoExtratoCommand command, CancellationToken cancellationToken)
         {
 
-            return CommandHandlerHelper.ExecuteToResponse(() => {
+            return await CommandHandlerHelper.ExecuteToResponse(() => {
 
-                var extrato = extratoService.RetornarExtrato(command.ExtratoId);
+                var extrato = extratoService.RetornarExtrato(command.ExtratoId).Result;
                 var evento = new ExtratoSaldoAtualizadoIntegrationEvent(command.ExtratoId, extrato.Saldo);
                 eventBus.PublishEvent(evento);
             });

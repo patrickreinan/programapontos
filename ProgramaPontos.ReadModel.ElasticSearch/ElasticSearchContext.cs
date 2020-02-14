@@ -9,14 +9,14 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
 {
     public class ElasticSearchContext
     {
-        private readonly ElasticSearchSettings settings;
+        
 
         internal ElasticClient Client { get; }
 
         public ElasticSearchContext(ElasticSearchSettings settings)
         {
 
-            this.settings = settings;
+            
             var connectionSettings = new ConnectionSettings(new Uri(settings.Url));
             ApplyDefaultMappings(connectionSettings);
 
