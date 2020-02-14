@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.EventHandler.Sinc
 {
@@ -9,6 +10,6 @@ namespace ProgramaPontos.EventHandler.Sinc
         where T : IDomainEvent 
  
     {
-        void Handle(T @event);
+        Task Handle(T @event);
     }
 }

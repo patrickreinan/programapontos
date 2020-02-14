@@ -10,6 +10,7 @@ using ProgramaPontos.ReadModel.Extrato;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
 {
@@ -35,24 +36,23 @@ namespace ProgramaPontos.EventHandler.Sinc.Handlers.Extrato
             this.eventStoreService = eventStoreService;
         }
 
-        public void Handle(ExtratoPontosAdicionadosDomainEvent @event)
+        public async Task Handle(ExtratoPontosAdicionadosDomainEvent @event)
         {
             
-            extratoReadModelService.AdicionarPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
-            commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId)).Wait();
+            await extratoReadModelService.AdicionarPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
+            await commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId));
         }
 
-        public void Handle(ExtratoPontosRemovidosDomainEvent @event)
+        public async Task Handle(ExtratoPontosRemovidosDomainEvent @event)
         {
-            extratoReadModelService.RemoverPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
-
-            commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId)).Wait();
+            await extratoReadModelService.RemoverPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
+            await commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId));
         }
 
-        public void Handle(ExtratoQuebraAdicionadaDomainEvent @event)
+        public async Task Handle(ExtratoQuebraAdicionadaDomainEvent @event)
         {
-            extratoReadModelService.QuebraPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
-            commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId)).Wait();
+            await extratoReadModelService.QuebraPontosExtrato(@event.AggregateId, @event.DateTime, @event.Pontos);
+            await commandBus.SendCommand(new AtualizarSaldoExtratoCommand(@event.AggregateId));
         }
 
 

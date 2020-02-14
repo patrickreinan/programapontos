@@ -1,15 +1,17 @@
 ﻿using ProgramaPontos.Domain.Aggregates.ExtratoAggregate;
+using ProgramaPontos.Domain.Core.Result;
 using System;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Domain.Services
 {
     public interface IExtratoService
     {
-        void AdicionarPontos(Guid extratoId, int pontos);
-        void CriarExtrato(Guid extratoId, Guid participanteId);
-        void EfetuarQuebraPontos(Guid extratoId, int pontos);
-        void RemoverPontos(Guid extratoId, int pontos);
-        Extrato RetornarExtrato(Guid extratoId);
-     
+        Task AdicionarPontos(Guid extratoId, int pontos);
+        Task<DomainResult> CriarExtrato(Guid extratoId, Guid participanteId);
+        Task EfetuarQuebraPontos(Guid extratoId, int pontos);
+        Task<DomainResult> RemoverPontos(Guid extratoId, int pontos);
+        Task<Extrato> RetornarExtrato(Guid extratoId);
+
     }
 }

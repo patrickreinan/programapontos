@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Domain.Core.Events
 {
    public interface IEventStoreService
     {
-        void SaveAggregate( IAggregateRoot aggregate);
+        Task SaveAggregate( IAggregateRoot aggregate);
 
-        T LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot;
+        Task<T> LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot;
 
-        IAggregateRoot LoadAggregate(Guid aggregateId, Type type);
+        Task<IAggregateRoot> LoadAggregate(Guid aggregateId, Type type);
 
 
 

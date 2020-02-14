@@ -10,13 +10,7 @@ namespace ProgramaPontos.Domain.Testes
 {
     public class ExtratoTests
     {
-        private Faker faker;
-
-        public ExtratoTests()
-        {
-            faker = new Faker();
-        }
-
+   
         [Fact(DisplayName = "Adicionar Pontos")]
         public void AdicionarPontos()
         {

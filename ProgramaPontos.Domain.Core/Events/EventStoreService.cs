@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Domain.Core.Events
 {
@@ -22,55 +23,54 @@ namespace ProgramaPontos.Domain.Core.Events
             this.snapshotStore = snapshotStore;
         }
 
-        public T LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot
+        public async Task<T> LoadAggregate<T>(Guid aggregateId) where T : IAggregateRoot
         {
-            T result = default(T);
             if (IsSnapshotAggregate<T>())
             {
-                result = TryLoadFromSnapshotNullIfException<T>(aggregateId);
+                T result = await TryLoadFromSnapshotNullIfException<T>(aggregateId);
 
                 return result != null
                 ? result
-                : LoadFromHistory<T>(aggregateId);
+                : await LoadFromHistory<T>(aggregateId);
             }
             else
-                return LoadFromHistory<T>(aggregateId);
+                return await LoadFromHistory<T>(aggregateId);
         }
 
-        public IAggregateRoot LoadAggregate(Guid aggregateId, Type type)
+        public async Task<IAggregateRoot> LoadAggregate(Guid aggregateId, Type type)
         {
             var method = this.GetType().GetMethod(nameof(LoadAggregate), new Type[] { typeof(Guid) });
             var generic = method.MakeGenericMethod(type);
-            return (IAggregateRoot)generic.Invoke(this, new object[] { aggregateId });
+            return await Task.FromResult((IAggregateRoot)generic.Invoke(this, new object[] { aggregateId }));
         }
 
 
-        private T TryLoadFromSnapshotNullIfException<T>(Guid aggregateId) where T : IAggregateRoot
+        private async Task<T> TryLoadFromSnapshotNullIfException<T>(Guid aggregateId) where T : IAggregateRoot
         {
             try
             {
-                return LoadFromSnapshot<T>(aggregateId);
+                return await LoadFromSnapshot<T>(aggregateId);
             }
             catch (Exception)
             {
 
-                return default(T);
+                return default;
             }
         }
 
-        private T LoadFromSnapshot<T>(Guid aggregateId) where T : IAggregateRoot
+        private async Task<T> LoadFromSnapshot<T>(Guid aggregateId) where T : IAggregateRoot
         {
             var aggregateSnapshot = snapshotStore.GetSnapshotFromAggreate(aggregateId);
-            if (aggregateSnapshot == null) return default(T);
-            var history = eventStore.GetEventsFromAggregateAfterVersion(aggregateSnapshot.Id, aggregateSnapshot.Version);
-            return CreateAggregateFromSnapshotAndHistory<T>(aggregateSnapshot, history);
+            if (aggregateSnapshot == null) return default;
+            var history = await eventStore.GetEventsFromAggregateAfterVersion(aggregateSnapshot.Id, aggregateSnapshot.Version);
+            return await CreateAggregateFromSnapshotAndHistory<T>(aggregateSnapshot, history);
 
         }
 
-        private T LoadFromHistory<T>(Guid aggregateId) where T : IAggregateRoot
+        private async Task<T> LoadFromHistory<T>(Guid aggregateId) where T : IAggregateRoot
         {
-            var history = eventStore.GetEventsFromAggregate(aggregateId);
-            return CreateAggregateFromHistory<T>(history);
+            var history = await eventStore.GetEventsFromAggregate(aggregateId);
+            return await CreateAggregateFromHistory<T>(history);
         }
 
         private bool IsSnapshotAggregate<T>() where T: IAggregateRoot
@@ -78,31 +78,31 @@ namespace ProgramaPontos.Domain.Core.Events
             return typeof(T).GetInterfaces().Any(i => i.FullName == typeof(ISnapshotAggregate<T>).FullName);
         }
 
-        private T CreateAggregateFromHistory<T>(IEnumerable<IDomainEvent> history)
+        private async Task<T> CreateAggregateFromHistory<T>(IEnumerable<IDomainEvent> history)
         {
-            return (T)typeof(T)
+            return await Task.FromResult( (T)typeof(T)
                  .GetConstructor(
                  BindingFlags.Instance | BindingFlags.NonPublic,
                  null, new Type[] { typeof(IEnumerable<IDomainEvent>) }, new ParameterModifier[0])
-               .Invoke(new object[] { history });
+               .Invoke(new object[] { history }));
         }
 
 
-        private T CreateAggregateFromSnapshotAndHistory<T>(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history)
+        private  async Task<T> CreateAggregateFromSnapshotAndHistory<T>(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history)
         {
-            return (T)typeof(T)
+            return await Task.FromResult( (T)typeof(T)
                  .GetConstructor(
                  BindingFlags.Instance | BindingFlags.NonPublic,
                  null, new Type[] { typeof(IAggregateSnapshot), typeof(IEnumerable<IDomainEvent>) }, new ParameterModifier[0])
-               .Invoke(new object[] { snapshot, history });
+               .Invoke(new object[] { snapshot, history }));
         }
 
-        public void SaveAggregate(IAggregateRoot aggregate)
+        public async Task SaveAggregate(IAggregateRoot aggregate)
         {
             var expectedVersion = aggregate.Version;
 
             //get aggregate version by id
-            var version = eventStore.GetVersionByAggregate(aggregate.Id);
+            var version =await eventStore.GetVersionByAggregate(aggregate.Id);
 
             //check consistency...
             if (version.HasValue && version != expectedVersion)

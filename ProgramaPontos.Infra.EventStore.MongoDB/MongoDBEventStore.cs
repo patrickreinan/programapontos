@@ -4,6 +4,7 @@ using ProgramaPontos.Domain.Core.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Infra.EventStore.MongoDB
 {
@@ -20,46 +21,47 @@ namespace ProgramaPontos.Infra.EventStore.MongoDB
 
         }
 
-        public IEnumerable<IDomainEvent> GetEventsFromAggregate(Guid aggregateId)
+        public async Task<IEnumerable<IDomainEvent>> GetEventsFromAggregate(Guid aggregateId)
         {
-            var eventStoreItems = collection
+            var eventStoreItems =await collection
                .Find(f => f.AggregateId == aggregateId.ToString())
                .SortBy(s => s.DateTime)
-               .ToEnumerable();
+               .ToCursorAsync();
             
-            return ToDomainEventEnumerable(eventStoreItems);
+            return ToDomainEventEnumerable(eventStoreItems.ToEnumerable());
         }
 
-        public IEnumerable<IDomainEvent> GetEventsFromAggregateAfterVersion(Guid aggregateId, int version)
+        public async Task<IEnumerable<IDomainEvent>> GetEventsFromAggregateAfterVersion(Guid aggregateId, int version)
         {
-            var eventStoreItems = collection
+            var eventStoreItems = await collection
              .Find(f => f.AggregateId == aggregateId.ToString() && f.Version > version)
              .SortBy(s => s.DateTime)
-             .ToEnumerable();
-            return ToDomainEventEnumerable(eventStoreItems);
+             .ToCursorAsync();
+            return ToDomainEventEnumerable(eventStoreItems.ToEnumerable());
         }
 
-        private static IEnumerable<IDomainEvent> ToDomainEventEnumerable(IEnumerable<EventStoreItem> eventStoreItems)
+        private  IEnumerable<IDomainEvent> ToDomainEventEnumerable(IEnumerable<EventStoreItem> eventStoreItems)
         {
             return (from EventStoreItem item in eventStoreItems
                     select EventStoreItem.ToDomainEvent(item));
         }
 
-        public int? GetVersionByAggregate(Guid aggregateId)
+        public async Task<int?> GetVersionByAggregate(Guid aggregateId)
         {
-            var e = collection
+            var e = await collection
                .Find(f => f.AggregateId == aggregateId.ToString())
                .SortBy(s => s.DateTime)
-               .ToEnumerable()
-               .LastOrDefault();
+               .Limit(1)
+              .FirstOrDefaultAsync();
+              
 
             return e == null ? default(int?) : e.Version;
         }
 
-        public void Save(IDomainEvent @event)
+        public async Task Save(IDomainEvent @event)
         {
             var eventStoreItem = EventStoreItem.FromDomainEvent(@event);
-            collection.InsertOne(eventStoreItem);
+            await collection.InsertOneAsync(eventStoreItem);
 
         }
     }

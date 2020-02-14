@@ -4,6 +4,7 @@ using ProgramaPontos.Domain.Core.Exceptions;
 using ProgramaPontos.Domain.Core.Snapshot;
 using ProgramaPontos.Domain.Events;
 using ProgramaPontos.Domain.Events.Participante;
+
 using System;
 using System.Collections.Generic;
 
@@ -13,8 +14,13 @@ namespace ProgramaPontos.Domain.Aggregates.ParticipanteAggregate
     {
         public string Nome { get; private set; }
         public string Email { get; private set; }
+
+        
+               
+
         private Participante(IEnumerable<IDomainEvent> history) : base(history) { }
         private Participante(IAggregateSnapshot snapshot, IEnumerable<IDomainEvent> history) : base(snapshot, history)        {        }
+
 
 
         private Participante() : base() { }
@@ -30,25 +36,29 @@ namespace ProgramaPontos.Domain.Aggregates.ParticipanteAggregate
             ValidarId(id);
 
             ApplyChange(new ParticipanteCriadoDomainEvent(id, nome,email));
+            
         }
+
+
+      
 
        
         private void ValidarEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
-                throw new DomainException("O e-mail não pode ser vazio");
+                NotificationContext.Add("O e-mail não pode ser vazio");
         }
 
         private void ValidarId(Guid id)
         {
             if (id == Guid.Empty)
-                throw new DomainException("O id do participante não pode ser vazio");
+                NotificationContext.Add("O id do participante não pode ser vazio");
         }
 
         private void ValidarNome(string nome)
         {
             if (string.IsNullOrEmpty(nome))
-                throw new DomainException("O nome do participante é obrigatório");
+                NotificationContext.Add("O nome do participante é obrigatório");
         }
 
         public void AlterarNome(string nome)

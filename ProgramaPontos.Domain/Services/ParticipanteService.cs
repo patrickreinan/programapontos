@@ -1,6 +1,8 @@
 ﻿using ProgramaPontos.Domain.Aggregates.ParticipanteAggregate;
 using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.Domain.Core.Result;
 using System;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.Domain.Services
 {
@@ -16,31 +18,36 @@ namespace ProgramaPontos.Domain.Services
         }
 
 
-        public void AdicionarParticipante(Guid id, string nome, string email)
+        public async Task<DomainResult> AdicionarParticipante(Guid id, string nome, string email)
         {
 
             var participante = new Participante(id, nome, email);
-            eventStoreService.SaveAggregate(participante);
 
+            if (!participante.IsValid())
+                return participante.Notifications().ToDomainResult();
+
+            await eventStoreService.SaveAggregate(participante);
+
+            return new DomainResult();
         }
 
-        public void AlterarEmail(Guid id, string email)
+        public async Task AlterarEmail(Guid id, string email)
         {
-            var participante = eventStoreService.LoadAggregate<Participante>(id);
+            var participante = await eventStoreService.LoadAggregate<Participante>(id);
             participante.AlterarEmail(email);
-            eventStoreService.SaveAggregate(participante);
+            await eventStoreService.SaveAggregate(participante);
         }
 
-        public void AlterarNome(Guid id, string nome)
+        public async Task AlterarNome(Guid id, string nome)
         {
 
-            var participante = eventStoreService.LoadAggregate<Participante>(id);
+            var participante = await eventStoreService.LoadAggregate<Participante>(id);
             participante.AlterarNome(nome);
-            eventStoreService.SaveAggregate(participante);
+            await eventStoreService.SaveAggregate(participante);
 
         }
 
-       
+
 
 
     }

@@ -4,6 +4,7 @@ using ProgramaPontos.ReadModel.ElasticSearch.Extensions;
 using ProgramaPontos.ReadModel.Participante;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProgramaPontos.ReadModel.ElasticSearch
 {
@@ -16,31 +17,33 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
             this.context = context;
         }
 
-        public void AlterarNomeParticipante(Guid participanteId, string nome)
+        public async Task AlterarNomeParticipante(Guid participanteId, string nome)
         {
 
-            var participante = RetornarParticipanteReadModelPeloId(participanteId);
+            var participante = await RetornarParticipanteReadModelPeloId(participanteId);
             participante.Nome = nome;
 
-            var update = new UpdateRequest<ParticipanteReadModel, object>(participante);
-            update.Doc = participante;
+            var update = new UpdateRequest<ParticipanteReadModel, object>(participante)
+            {
+                Doc = participante
+            };
             var response = context.Client.Update(update);
             response.ThrowIfNotValid();
 
         }
 
-        public void InserirParticipanteReadModel(ParticipanteReadModel participanteReadModel)
+        public async Task InserirParticipanteReadModel(ParticipanteReadModel participanteReadModel)
         {
-            context.Client.IndexDocument(participanteReadModel)
-                 .ThrowIfNotValid();
+            var response = await context.Client.IndexDocumentAsync(participanteReadModel);
+            response.ThrowIfNotValid();
 
 
 
         }
 
-        private ParticipanteReadModel RetornarParticipanteReadModelPeloId(Guid id)
+        private async Task<ParticipanteReadModel> RetornarParticipanteReadModelPeloId(Guid id)
         {
-            var response = context.Client.Search<ParticipanteReadModel>(
+            var response = await context.Client.SearchAsync<ParticipanteReadModel>(
                s => s.
                    Query(q => q
                        .Match(m => m
@@ -56,14 +59,14 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
             return response.Documents.FirstOrDefault();
         }
 
-        public ParticipanteReadModel RetornarParticipanteReadModelPeloEmail(string email)
+        public async Task<ParticipanteReadModel> RetornarParticipanteReadModelPeloEmail(string email)
         {
-            var response = context.Client.Search<ParticipanteReadModel>(
+            var response = await context.Client.SearchAsync<ParticipanteReadModel>(
                s => s
-                    
+
                    .Query(q => q
-                        .QueryString(qs=>qs
-                            .Query($"{nameof(ParticipanteReadModel.Email).ToLower()}:\"{email}\"")    
+                        .QueryString(qs => qs
+                            .Query($"{nameof(ParticipanteReadModel.Email).ToLower()}:\"{email}\"")
                        )
                   )
                );
@@ -73,14 +76,16 @@ namespace ProgramaPontos.ReadModel.ElasticSearch
             return response.Documents.FirstOrDefault();
         }
 
-        public void AlterarEmailParticipante(Guid participanteId, string email)
+        public async Task AlterarEmailParticipante(Guid participanteId, string email)
         {
-            var participante = RetornarParticipanteReadModelPeloId(participanteId);
+            var participante = await RetornarParticipanteReadModelPeloId(participanteId);
             participante.Email = email;
 
-            var update = new UpdateRequest<ParticipanteReadModel, object>(participante);
-            update.Doc = participante;
-            var response = context.Client.Update(update);
+            var update = new UpdateRequest<ParticipanteReadModel, object>(participante)
+            {
+                Doc = participante
+            };
+            var response = await context.Client.UpdateAsync(update);
 
             response.ThrowIfNotValid();
         }

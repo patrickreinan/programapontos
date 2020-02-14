@@ -1,5 +1,6 @@
 ﻿using ProgramaPontos.Domain;
 using ProgramaPontos.Domain.Core.Events;
+using ProgramaPontos.Domain.Core.Notifications;
 using ProgramaPontos.Domain.Core.Snapshot;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,14 @@ namespace ProgramaPontos.Domain.Core.Aggregates
 
         private readonly List<IDomainEvent> changes = new List<IDomainEvent>();
 
+        protected readonly INotificationContext NotificationContext;
+
         protected AggregateRoot() : this(history: null) { }
 
         protected AggregateRoot(IEnumerable<IDomainEvent> history)
         {
             ApplyHistory(history);
+            NotificationContext = new NotificationContext();
 
         }
 
@@ -38,7 +42,18 @@ namespace ProgramaPontos.Domain.Core.Aggregates
             ApplySnapshot(snapshot);            
             ApplyHistory(history);
         }
-            
+
+        public bool IsValid()
+        {
+            return !NotificationContext.HasNotifications();
+        }
+
+        public IReadOnlyCollection<DomainNotification> Notifications()
+        {
+            return NotificationContext.Notifications;
+
+        }
+
         public IEnumerable<IDomainEvent> GetUncommittedChanges()
         {
             return changes;

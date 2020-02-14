@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgramaPontos.API.Extensions;
 using ProgramaPontos.API.ViewModel;
+using ProgramaPontos.Application;
 using ProgramaPontos.Application.Services;
 using ProgramaPontos.Application.Services.Interfaces;
 
@@ -23,6 +25,8 @@ namespace ProgramaPontos.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] ParticipanteViewModel participanteViewModel)
         {
             var resultado = await participanteApplicationService.CriarParticipante(new Application.DTO.ParticipanteDTO()
@@ -39,6 +43,8 @@ namespace ProgramaPontos.API.Controllers
 
         [HttpPut]
         [Route("{id}/alterarnome")]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AlterarNome([FromBody] AlterarNomeViewModel alterarNomeViewModel,[FromRoute] Guid id)
         {
             return 
@@ -48,6 +54,8 @@ namespace ProgramaPontos.API.Controllers
 
         [HttpPut]
         [Route("{id}/alteraremail")]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AlterarEmail([FromBody] AlterarEmailViewModel alterarEmailViewModel, [FromRoute] Guid id)
         {
             return
@@ -57,6 +65,8 @@ namespace ProgramaPontos.API.Controllers
 
         [HttpGet]
         [Route("{email}/retornarporemail")]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Resultado), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> RetornarPorEmail([FromRoute] string email)
         {
             return 
