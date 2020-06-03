@@ -7,7 +7,7 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
 {
     public class MongoDBSnapshotStore : ISnapshotStore
     {
-        private IMongoCollection<SnapshotItem> collection;
+        private readonly IMongoCollection<SnapshotItem> collection;
 
 
         public MongoDBSnapshotStore(MongoDBSnapshotStoreSettings settings)
@@ -27,7 +27,7 @@ namespace ProgramaPontos.Snapshot.SnapshotStore.MongoDB
         public void SaveSnapshot(IAggregateSnapshot snapshot) 
         {
             var snapshotItem = SnapshotItem.FromDomainSnapshot(snapshot);
-            collection.ReplaceOne(f => f.AggregateId == snapshot.Id.ToString(), snapshotItem, new UpdateOptions() { IsUpsert = true });
+            collection.ReplaceOne(f => f.AggregateId == snapshot.Id.ToString(), snapshotItem, new ReplaceOptions() { IsUpsert = true });
 
         }
     }

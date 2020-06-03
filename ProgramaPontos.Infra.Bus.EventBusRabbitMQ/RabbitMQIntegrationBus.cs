@@ -9,7 +9,7 @@ namespace ProgramaPontos.Infra.Bus.EventBusRabbitMQ
     public class RabbitMQIntegrationBus : IIntegrationBus
     {
 
-        private RabbitMQBus<IIntegrationEvent> bus;
+        private readonly RabbitMQBus<IIntegrationEvent> bus;
         public RabbitMQIntegrationBus(RabbitMQSettings settings)
         {
             bus = new RabbitMQBus<IIntegrationEvent>(settings);

@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramaPontos.API", "Progr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{F1B9500E-55EA-45DB-A06B-0651070F4464}"
 	ProjectSection(SolutionItems) = preProject
-		docker\run_containers.bat = docker\run_containers.bat
+		docker\docker-compose.yml = docker\docker-compose.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "snapshot", "snapshot", "{9634945A-AC9F-4548-B815-FF7F5AEA5C87}"
@@ -72,11 +72,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grpc", "grpc", "{04502E2F-8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramaPontos.gRPC", "ProgramaPontos.gRPC\ProgramaPontos.gRPC.csproj", "{CE3A3276-D50E-4123-B00A-4BB4371016F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.gRPC.Server", "ProgramaPontos.gRPC.Server\ProgramaPontos.gRPC.Server.csproj", "{E12E8EA4-9BDC-45CC-B1DC-9F60C41D42C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramaPontos.gRPC.Server", "ProgramaPontos.gRPC.Server\ProgramaPontos.gRPC.Server.csproj", "{E12E8EA4-9BDC-45CC-B1DC-9F60C41D42C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CEA18870-FB35-48B6-82F4-516B4E6BA9A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramaPontos.gRPC.ConsoleClient.Tests", "ProgramaPontos.gRPC.ConsoleClient.Tests\ProgramaPontos.gRPC.ConsoleClient.Tests.csproj", "{2609B6D5-A850-4E1A-99CA-7C0CB07215AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgramaPontos.gRPC.ConsoleClient.Tests", "ProgramaPontos.gRPC.ConsoleClient.Tests\ProgramaPontos.gRPC.ConsoleClient.Tests.csproj", "{2609B6D5-A850-4E1A-99CA-7C0CB07215AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

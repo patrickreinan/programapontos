@@ -19,7 +19,7 @@ namespace ProgramaPontos.Application.CommandStack.AggregateCommands.Extrato.Hand
     {
         private readonly IExtratoService extratoService;
         private readonly IIntegrationBus eventBus;
-        private readonly IEventStoreService eventStoreService;
+        
 
         public AtualizarSaldoExtratoCommandHandler(   IExtratoService extratoService, IIntegrationBus eventBus)
         {

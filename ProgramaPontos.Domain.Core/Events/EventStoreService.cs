@@ -115,7 +115,7 @@ namespace ProgramaPontos.Domain.Core.Events
             {
                 newVersion++;
                 @event.Version = newVersion.Value;
-                eventStore.Save(@event);
+                await eventStore.Save(@event);
                 eventBus.PublishEvent(@event);
             }
 

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using ProgramaPontos.Infra.Ioc.AspNetCore;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.Swagger;
+
 
 namespace ProgramaPontos.API
 {

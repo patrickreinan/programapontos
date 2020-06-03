@@ -7,7 +7,7 @@ namespace ProgramaPontos.Domain.Core.Notifications
 {
     class NotificationContext : INotificationContext
     {
-        private List<DomainNotification> notifications;
+        private readonly List<DomainNotification> notifications;
 
 
         public NotificationContext()

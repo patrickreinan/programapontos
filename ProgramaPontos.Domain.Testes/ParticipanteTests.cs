@@ -8,7 +8,7 @@ namespace ProgramaPontos.Domain.Testes
 {
     public class ParticipanteTests
     {
-        private Faker faker;
+        private readonly Faker faker;
 
         public ParticipanteTests()
         {

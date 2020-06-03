@@ -8,7 +8,7 @@ namespace ProgramaPontos.Infra.Bus.EventBusRabbitMQ
 {
     class RabbitMQEventBus : IEventBus
     {
-        private RabbitMQBus<IDomainEvent> bus;
+        private readonly RabbitMQBus<IDomainEvent> bus;
 
         public RabbitMQEventBus(RabbitMQSettings settings)
         {

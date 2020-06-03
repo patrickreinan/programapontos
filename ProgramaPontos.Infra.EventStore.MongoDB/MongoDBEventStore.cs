@@ -10,7 +10,7 @@ namespace ProgramaPontos.Infra.EventStore.MongoDB
 {
     public class MongoDBEventStore : IEventStore
     {
-        private IMongoCollection<EventStoreItem> collection;
+        private readonly IMongoCollection<EventStoreItem> collection;
 
         public MongoDBEventStore(MongoDBEventStoreSettings settings)
         {

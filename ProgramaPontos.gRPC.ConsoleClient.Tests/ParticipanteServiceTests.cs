@@ -10,9 +10,9 @@ namespace ProgramaPontos.gRPC.ConsoleClient.Tests
 {
     class ParticipanteServiceTests
     {
-        private Channel channel;
-        private ParticipanteService.ParticipanteServiceClient client;
-        private Faker faker;
+        private readonly Channel channel;
+        private readonly ParticipanteService.ParticipanteServiceClient client;
+        private readonly Faker faker;
 
         public ParticipanteServiceTests()
         {
