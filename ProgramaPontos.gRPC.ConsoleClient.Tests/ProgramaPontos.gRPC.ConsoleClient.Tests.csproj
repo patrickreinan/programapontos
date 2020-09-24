@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="28.4.4" />
-    <PackageReference Include="Grpc.Core" Version="2.27.0" />
+    <PackageReference Include="Bogus" Version="31.0.2" />
+    <PackageReference Include="Grpc.Core" Version="2.32.0" />
   </ItemGroup>
 
   <ItemGroup>

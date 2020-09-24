@@ -94,9 +94,9 @@ namespace ProgramaPontos.Infra.Bus.EventBusRabbitMQ
             });
         }
 
-        private void DoRaiseEvent(byte[] body)
+        private void DoRaiseEvent(ReadOnlyMemory<byte> body)
         {
-            var json = Encoding.UTF8.GetString(body);
+            var json = Encoding.UTF8.GetString(body.Span);
 
             var jsonObject = (JObject)JsonConvert.DeserializeObject(json);
 
