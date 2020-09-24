@@ -12,7 +12,9 @@ Nesta aplicação está sendo utilizado:
 <li><b>MongoDB</b> como EventStore</li>
 </ul>
 
+
 <ul>
+<li>23-09-2020 <b>Upgrade para .NET 5</b></li>
 <li>02-06-2020 <b>Adicionado docker-compose</b></li>
 <li>14-02-2020 <b>Ajustes de performance</b></li>  
 <li>09-02-2020 <b>Upgrade para .NET Core 3.1</b></li>
