@@ -21,7 +21,7 @@ namespace ProgramaPontos.Snapshot.Snapshotter
             this.settings = settings;
         }
 
-        public async Task Handle(T @event)
+        public async Task Handle(T @event) 
         {
 
             if (@event.Version % settings.WhenVersionNumberIsDividedBy!=0)
@@ -31,7 +31,7 @@ namespace ProgramaPontos.Snapshot.Snapshotter
             var aggregate = await eventStoreService.LoadAggregate(@event.AggregateId, GetAggregateTypeFromEvent(@event));
             var snapshot = BuildSnapshotFromAggregate(aggregate);
             snapshotStore.SaveSnapshot(snapshot);
-            Console.WriteLine($"{@event.AggregateId} Version: {@event.Version} snapshotted");
+            Console.WriteLine($"{@event.AggregateId } Version: {@event.Version} snapshotted");
 
         }
 

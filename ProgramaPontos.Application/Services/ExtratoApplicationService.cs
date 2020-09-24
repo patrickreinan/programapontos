@@ -44,7 +44,6 @@ namespace ProgramaPontos.Application.Services
             return await ExecutaAcaoSeExtratoExiste(participanteId,
                     (extratoId) => commandBus.EnviarCommandoRetornaResultadoAsync(new EfetuarQuebraPontosExtratoCommand(extratoId, pontos)).Result);
 
-
         }
 
         public async Task<Resultado> ExecutaAcaoSeExtratoExiste(Guid participanteId, Func<Guid, Resultado> action)
