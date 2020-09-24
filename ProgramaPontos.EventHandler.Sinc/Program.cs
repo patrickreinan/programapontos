@@ -33,11 +33,11 @@ namespace ProgramaPontos.EventHandler.Sinc
         private static void StarBus()
         {
             var eventBus = serviceProvider.GetService<IEventBus>();
-            eventBus.OnRaiseEvent = (e) => { onRaiseEvent(e, typeof(IDomainEventHandler<>)); };
+            eventBus.OnRaiseEvent = (e) => onRaiseEvent(e, typeof(IDomainEventHandler<>));
             eventBus.Consume();
 
             var integrationBus = serviceProvider.GetService<IIntegrationBus>();
-            integrationBus.OnRaiseEvent = (e) => { onRaiseEvent(e,typeof(IIntegrationEventHandler<>)); };
+            integrationBus.OnRaiseEvent = (e) => onRaiseEvent(e, typeof(IIntegrationEventHandler<>));
             integrationBus.Consume();
         }
 

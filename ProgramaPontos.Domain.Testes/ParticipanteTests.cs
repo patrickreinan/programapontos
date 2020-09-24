@@ -42,10 +42,7 @@ namespace ProgramaPontos.Domain.Testes
             var participante = new Participante(Guid.NewGuid(), nome, email);
 
 
-            var resultado = Assert.Throws<DomainException>(() =>
-             {
-                 participante.AlterarNome(nomeAlterado);
-             });
+            var resultado = Assert.Throws<DomainException>(() => participante.AlterarNome(nomeAlterado));
 
 
             //assert

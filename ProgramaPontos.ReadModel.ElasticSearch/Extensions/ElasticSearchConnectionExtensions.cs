@@ -13,10 +13,7 @@ namespace ProgramaPontos.ReadModel.ElasticSearch.Extensions
         {
             var settings = configuration.GetSection(nameof(ElasticSearchSettings)).Get<ElasticSearchSettings>();
 
-            services.AddSingleton<ElasticSearchContext> ((context) =>
-            {
-                return new ElasticSearchContext(settings);
-            });
+            services.AddSingleton<ElasticSearchContext> ((context) => new ElasticSearchContext(settings));
 
             return services;
         }

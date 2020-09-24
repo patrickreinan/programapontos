@@ -25,10 +25,7 @@ namespace ProgramaPontos.Application.Services
         {
 
             return await ExecutaAcaoSeExtratoExiste(participanteId,
-                   (extratoId) =>
-                   {
-                       return commandBus.EnviarCommandoRetornaResultadoAsync(new AdicionarPontosExtratoCommand(extratoId, pontos)).Result;
-                   });
+                   (extratoId) => commandBus.EnviarCommandoRetornaResultadoAsync(new AdicionarPontosExtratoCommand(extratoId, pontos)).Result);
 
 
         }
@@ -38,20 +35,14 @@ namespace ProgramaPontos.Application.Services
         public async Task<Resultado> RemoverPontosParticipante(Guid participanteId, int pontos)
         {
             return await ExecutaAcaoSeExtratoExiste(participanteId,
-                   (extratoId) =>
-                   {
-                       return commandBus.EnviarCommandoRetornaResultadoAsync(new RemoverPontosExtratoCommand(extratoId, pontos)).Result;
-                   });
+                   (extratoId) => commandBus.EnviarCommandoRetornaResultadoAsync(new RemoverPontosExtratoCommand(extratoId, pontos)).Result);
 
         }
 
         public async Task<Resultado> EfetuarQuebraPontosParticipante(Guid participanteId, int pontos)
         {
             return await ExecutaAcaoSeExtratoExiste(participanteId,
-                    (extratoId) =>
-                    {
-                        return commandBus.EnviarCommandoRetornaResultadoAsync(new EfetuarQuebraPontosExtratoCommand(extratoId, pontos)).Result;
-                    });
+                    (extratoId) => commandBus.EnviarCommandoRetornaResultadoAsync(new EfetuarQuebraPontosExtratoCommand(extratoId, pontos)).Result);
 
 
         }

@@ -30,10 +30,7 @@ namespace ProgramaPontos.API
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
                 
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc(version, new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ProgramaPontos",Version= version });
-            });
+            services.AddSwaggerGen(c => c.SwaggerDoc(version, new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ProgramaPontos", Version = version }));
 
             
 
@@ -47,10 +44,7 @@ namespace ProgramaPontos.API
             app.UseMvc();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{applicationName} {version}");
-            });
+            app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"{applicationName} {version}"));
         }
     }
 }

@@ -77,11 +77,7 @@ namespace ProgramaPontos.Infra.Bus.EventBusRabbitMQ
                     channel.QueueBind(queue.QueueName, settings.ExchangeName, settings.RoutingKey);
 
                     var consumer = new EventingBasicConsumer(channel);
-                    consumer.Received += (model, ea) =>
-                    {
-
-                        DoRaiseEvent(ea.Body);
-                    };
+                    consumer.Received += (model, ea) => DoRaiseEvent(ea.Body);
 
 
                     channel.BasicConsume(queue: queue.QueueName,

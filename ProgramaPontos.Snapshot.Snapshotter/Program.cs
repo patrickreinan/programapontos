@@ -32,7 +32,7 @@ namespace ProgramaPontos.Snapshot.Snapshotter
         private static void StarBus()
         {
             var bus = serviceProvider.GetService<IEventBus>();
-            bus.OnRaiseEvent = (e) => { onRaiseEvent(e); };
+            bus.OnRaiseEvent = (e) => onRaiseEvent(e);
             bus.Consume();
         }
 
@@ -51,7 +51,7 @@ namespace ProgramaPontos.Snapshot.Snapshotter
         {
             serviceProvider = new ServiceCollection()
                     .AddProgramaPontosServices(configuration)
-                    .AddSingleton<SnapshotSettings>((context) => { return configuration.GetSection(nameof(SnapshotSettings)).Get<SnapshotSettings>(); })
+                    .AddSingleton<SnapshotSettings>((context) => configuration.GetSection(nameof(SnapshotSettings)).Get<SnapshotSettings>())
                     .AddScoped(typeof(IDomainEventHandler<>), typeof(DomainEventHandler<>))
                     .BuildServiceProvider();
 
