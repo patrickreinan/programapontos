@@ -14,8 +14,13 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
     public class Extrato : AggregateRoot, ISnapshotAggregate<Extrato>
     {
         public Guid ParticipanteId { get; private set; }
-        public List<Movimentacao> Movimentacoes { get; private set; } = new List<Movimentacao>();
-        public int Saldo { get; private set; } 
+
+        public int Saldo { get; private set; }
+
+        private List<Movimentacao> movimentacoes;
+
+        public List<Movimentacao> Movimentacoes { get => RetornarListaMovimentacoes(); private set => movimentacoes = value; }
+
 
         private Extrato(IEnumerable<IDomainEvent> history) : base(history) { }
 
@@ -39,6 +44,16 @@ namespace ProgramaPontos.Domain.Aggregates.ExtratoAggregate
             Saldo = extratoSnapshot.Saldo;
 
         }
+
+
+        private List<Movimentacao> RetornarListaMovimentacoes()
+        {
+            if (movimentacoes == null)
+                movimentacoes = new List<Movimentacao>();
+
+            return movimentacoes;
+        }
+
 
         public Extrato(Guid id, Guid participanteId) : this() => ApplyChange(new ExtratoCriadoDomainEvent(id, participanteId));
 
