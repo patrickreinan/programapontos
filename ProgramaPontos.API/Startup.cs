@@ -28,7 +28,7 @@ namespace ProgramaPontos.API
         {
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
-                //.AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+                
 
             services.AddSwaggerGen(c =>
             {
