@@ -10,6 +10,14 @@ services:
     environment:
       - discovery.type=single-node
 
+  kibana_1:
+    container_name: "kibana_1"
+    image: kibana:7.5.2
+    ports: 
+      - 5601:5601
+    environment: 
+      ELASTICSEARCH_HOSTS: http://elasticsearch_1:9200
+    
   mongo_1:
     container_name: "mongo_1"
     image: mongo:latest
